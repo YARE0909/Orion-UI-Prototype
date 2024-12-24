@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CameraOff, CirclePause, Disc2, MicOff, PanelLeftClose, PanelRightClose, Phone, PhoneIncoming, PhoneOff } from "lucide-react";
+import { CameraOff, CirclePause, Disc2, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff } from "lucide-react";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
@@ -92,12 +92,11 @@ export default function Index() {
       </div>
       <div className="w-full h-full flex">
         {/* Left Panel */}
-        <div className={`h-[90vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3 border-r-2 border-r-border'} transition-all duration-300 ease-in-out`}>
+        <div className={`h-[90vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
           {inCall ? (
             <div className="w-full h-full bg-black relative">
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
                 <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
-
                   <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1">
                     <Disc2 className="w-6 h-6" />
                     <h1 className="font-bold whitespace-nowrap">Capture Document</h1>
@@ -115,7 +114,7 @@ export default function Index() {
                     <CameraOff className="w-6 h-6" />
                   </button>
                   <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
-                    <CirclePause className="w-6 h-6" />
+                    <Pause className="w-6 h-6" />
                     {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
                   </button>
                   <button className="w-fit rounded-md bg-red-500 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
@@ -126,7 +125,7 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <div className="w-full h-full mb-20 rounded-lg p-4 flex flex-col space-y-4 justify-center items-center">
+            <div className="w-full h-full mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
               <div className="p-4 border-2 border-dashed border-border rounded-md">
                 <h1 className="font-bold text-2xl text-textAlt">No Active Calls</h1>
               </div>
@@ -135,109 +134,129 @@ export default function Index() {
         </div>
 
         {/* Right Panel */}
-        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-0' : 'w-1/3 px-2'} h-full flex flex-col space-y-4 overflow-hidden`}>
+        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 px-2'} h-full`}>
           {/* Summary Section */}
-          <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
-            <div
-              className={`w-full bg-green-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
-              onClick={() => handleFilterChange("all")}
-            >
-              <div className="flex space-x-2 items-center">
-                <div className="border-r-2 border-r-green-500 pr-2">
-                  <Phone className="w-6 h-6 text-green-500" />
-                </div>
-                <div>
-                  <h1 className="w-fit text-xs font-bold rounded text-green-500">ALL CALLS</h1>
-                  <h1 className="font-bold text-2xl">12</h1>
-                </div>
-              </div>
-            </div>
-            <div
-              className={`w-full bg-blue-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-blue-500" : "border-transparent"}`}
-              onClick={() => handleFilterChange("hold")}
-            >
-              <div className="flex space-x-2 items-center">
-                <div className="border-r-2 border-r-blue-500 pr-2">
-                  <CirclePause className="w-6 h-6 text-blue-500" />
-                </div>
-                <div>
-                  <h1 className="w-fit text-xs font-bold rounded text-blue-500">ON HOLD</h1>
-                  <h1 className="font-bold text-2xl">6</h1>
-                </div>
-              </div>
-            </div>
-            <div
-              className={`w-full bg-orange-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
-              onClick={() => handleFilterChange("incoming")}
-            >
-              <div className="flex space-x-2 items-center">
-                <div className="border-r-2 border-r-orange-500 pr-2">
-                  <PhoneIncoming className="w-6 h-6 text-orange-500" />
-                </div>
-                <div>
-                  <h1 className="w-fit text-xs font-bold rounded text-orange-500">INCOMING</h1>
-                  <h1 className="font-bold text-2xl">6</h1>
-                </div>
-              </div>
-            </div>
-          </div>
+          {!isRightPanelCollapsed && (
 
-          {/* Grid Section */}
-          <div className="w-full h-full overflow-y-auto pb-16 grid grid-cols-2 gap-2 auto-rows-min">
-            {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
-            {filter === "all" && (
-              <>
-                {/* Incoming Calls */}
-                <div className="flex flex-col space-y-2">
-                  {MockCardData.filter((card) => card.status === "incoming").length > 0 ? (
-                    MockCardData.filter((card) => card.status === "incoming").map((card, index) => (
-                      <CallingCard
-                        key={index}
-                        title={card.title}
-                        status={card.status}
-                        setInCall={setInCall}
-                      />
+            <div className=" h-full flex flex-col space-y-4 overflow-hidden">
+              <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
+                <div
+                  className={`w-full bg-green-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
+                  onClick={() => handleFilterChange("all")}
+                >
+                  <div className="flex space-x-2 items-center">
+                    <div className="border-r-2 border-r-green-500 pr-2">
+                      <Phone className="w-6 h-6 text-green-500" />
+                    </div>
+                    <div>
+                      <h1 className="w-fit text-xs font-bold rounded text-green-500">ALL CALLS</h1>
+                      <h1 className="font-bold text-2xl">12</h1>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={`w-full bg-blue-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-blue-500" : "border-transparent"}`}
+                  onClick={() => handleFilterChange("hold")}
+                >
+                  <div className="flex space-x-2 items-center">
+                    <div className="border-r-2 border-r-blue-500 pr-2">
+                      <Pause className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <h1 className="w-fit text-xs font-bold rounded text-blue-500">ON HOLD</h1>
+                      <h1 className="font-bold text-2xl">6</h1>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={`w-full bg-orange-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  onClick={() => handleFilterChange("incoming")}
+                >
+                  <div className="flex space-x-2 items-center">
+                    <div className="border-r-2 border-r-orange-500 pr-2">
+                      <PhoneIncoming className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div>
+                      <h1 className="w-fit text-xs font-bold rounded text-orange-500">INCOMING</h1>
+                      <h1 className="font-bold text-2xl">6</h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Grid Section */}
+              <div className="w-full h-full overflow-y-auto pb-16 grid grid-cols-2 gap-2 auto-rows-min">
+                {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
+                {filter === "all" && (
+                  <>
+                    {/* Incoming Calls */}
+                    <div className="flex flex-col space-y-2">
+                      {MockCardData.filter((card) => card.status === "incoming").length > 0 ? (
+                        MockCardData.filter((card) => card.status === "incoming").map((card, index) => (
+                          <CallingCard
+                            key={index}
+                            title={card.title}
+                            status={card.status}
+                            setInCall={setInCall}
+                          />
+                        ))
+                      ) : (
+                        <div className="w-full rounded-md border-2 border-dashed border-border p-4">
+                          <h1 className="text-center text-xl text-textAlt font-bold">No Incoming Calls</h1>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* On Hold Calls */}
+                    <div className="flex flex-col space-y-2">
+                      {MockCardData.filter((card) => card.status === "hold").length > 0 ? (
+                        MockCardData.filter((card) => card.status === "hold").map((card, index) => (
+                          <CallingCard
+                            key={index}
+                            title={card.title}
+                            status={card.status}
+                            setInCall={setInCall}
+                          />
+                        ))
+                      ) : (
+                        <div className="w-full rounded-md border-2 border-dashed border-border p-4">
+                          <h1 className="text-center text-xl text-textAlt font-bold">No Calls On Hold</h1>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {/* For other filters (hold, incoming, etc.) */}
+                {filter !== "all" && (
+                  filteredData.length > 0 ? (
+                    filteredData.map((card, index) => (
+                      <CallingCard key={index} title={card.title} status={card.status} setInCall={setInCall} />
                     ))
                   ) : (
                     <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                      <h1 className="text-center text-xl text-textAlt font-bold">No Incoming Calls</h1>
+                      <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
                     </div>
-                  )}
-                </div>
-
-                {/* On Hold Calls */}
-                <div className="flex flex-col space-y-2">
-                  {MockCardData.filter((card) => card.status === "hold").length > 0 ? (
-                    MockCardData.filter((card) => card.status === "hold").map((card, index) => (
-                      <CallingCard
-                        key={index}
-                        title={card.title}
-                        status={card.status}
-                        setInCall={setInCall}
-                      />
-                    ))
-                  ) : (
-                    <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                      <h1 className="text-center text-xl text-textAlt font-bold">No Calls On Hold</h1>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-
-            {/* For other filters (hold, incoming, etc.) */}
-            {filter !== "all" && (
-              filteredData.length > 0 ? (
-                filteredData.map((card, index) => (
-                  <CallingCard key={index} title={card.title} status={card.status} setInCall={setInCall} />
-                ))
-              ) : (
-                <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                  <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
-                </div>
-              )
-            )}
-          </div>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+          {isRightPanelCollapsed && (
+            <div className="w-full h-full flex flex-col space-y-4 justify-start items-center p-2">
+              <div className="w-full h-fit bg-green-500/30 p-2 rounded-md flex space-x-1 justify-center items-center">
+                <Phone className="w-5 h-5 text-green-500" />
+                <h1 className="font-bold text-xl">12</h1>
+              </div>
+              <div className="w-full h-fit bg-blue-500/30 p-2 rounded-md flex space-x-2 justify-center items-center">
+                <Pause className="w-5 h-5 text-blue-500" />
+                <h1 className="font-bold text-xl">6</h1>
+              </div>
+              <div className="w-full h-fit bg-orange-500/30 p-2 rounded-md flex space-x-2 justify-center items-center">
+                <PhoneIncoming className="w-5 h-5 text-orange-500" />
+                <h1 className="font-bold text-xl">6</h1>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

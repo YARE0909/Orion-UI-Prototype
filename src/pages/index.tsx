@@ -10,16 +10,21 @@ function WatchCard({ title, src }: { title: string, src?: any }) {
   return (
     <div className="w-full h-56 flex flex-col space-y-4 bg-highlight rounded-lg p-1">
       <div className="w-full h-full bg-background flex items-center justify-center rounded-lg relative">
-        <video
-          src="/videos/placeholder.mp4"
-          width={1000}
-          height={1000}
-          autoPlay
-          muted
-          loop
-          className="w-full h-full object-cover rounded-md"
-        />
-
+        {src ? (
+          <video
+            src={src}
+            width={1000}
+            height={1000}
+            autoPlay
+            muted
+            loop
+            className="w-full h-full object-cover rounded-md"
+          />
+        ) : (
+          <div>
+            <h1 className="font-bold text-xl text-text">No Video Feed</h1>
+          </div>
+        )}
         <div className="w-full flex justify-between items-center absolute top-0 left-0 px-2 py-2 bg-black/70">
           <div>
             <h1 className="font-bold text-lg">{title}</h1>
@@ -42,7 +47,7 @@ export default function Index() {
       </div>
       <div className="w-full h-full overflow-y-auto pb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-stretch">
         {MockCardData.map((card, index) => (
-          <WatchCard key={index} title={card.title} />
+          <WatchCard key={index} title={card.title} src="/videos/placeholder.mp4" />
         ))}
       </div>
     </div>

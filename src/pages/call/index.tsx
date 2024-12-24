@@ -97,14 +97,7 @@ export default function Index() {
             <div className="w-full h-full bg-black relative">
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
                 <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
-                  <button className="w-32 rounded-md bg-red-500 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
-                    <PhoneOff className="w-6 h-6" />
-                    <h1 className="font-bold whitespace-nowrap">End Call</h1>
-                  </button>
-                  <button className="w-32 rounded-md bg-blue-500 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
-                    <CirclePause className="w-6 h-6" />
-                    <h1 className="font-bold whitespace-nowrap">Hold</h1>
-                  </button>
+
                   <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1">
                     <Disc2 className="w-6 h-6" />
                     <h1 className="font-bold whitespace-nowrap">Capture Document</h1>
@@ -120,6 +113,14 @@ export default function Index() {
                     setCameraOff(!cameraOff)
                   }}>
                     <CameraOff className="w-6 h-6" />
+                  </button>
+                  <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
+                    <CirclePause className="w-6 h-6" />
+                    {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
+                  </button>
+                  <button className="w-fit rounded-md bg-red-500 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
+                    <PhoneOff className="w-6 h-6" />
+                    {/* <h1 className="font-bold whitespace-nowrap">End Call</h1> */}
                   </button>
                 </div>
               </div>

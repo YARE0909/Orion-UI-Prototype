@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CameraOff, CirclePause, Disc2, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff } from "lucide-react";
+import { CameraOff, Disc2, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff } from "lucide-react";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (

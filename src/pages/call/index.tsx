@@ -81,7 +81,7 @@ export default function Index() {
   });
 
   return (
-    <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-4">
+    <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-2">
       <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2">
         <h1 className="font-bold text-2xl">CALL MANAGER</h1>
         <button
@@ -126,8 +126,8 @@ export default function Index() {
             </div>
           ) : (
             <div className="w-full h-full mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
-              <div className="p-4 border-2 border-dashed border-border rounded-md">
-                <h1 className="font-bold text-2xl text-textAlt">No Active Calls</h1>
+              <div>
+                <h1 className="font-bold text-2xl text-textAlt">Not In Call</h1>
               </div>
             </div>
           )}
@@ -141,7 +141,7 @@ export default function Index() {
             <div className=" h-full flex flex-col space-y-4 overflow-hidden">
               <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
                 <div
-                  className={`w-full bg-green-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
+                  className={`w-full bg-green-500/30 hover:bg-green-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -155,7 +155,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-blue-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-blue-500" : "border-transparent"}`}
+                  className={`w-full bg-blue-500/30 hover:bg-blue-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-blue-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -169,7 +169,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-orange-500/30 rounded-md p-2 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  className={`w-full bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -242,18 +242,29 @@ export default function Index() {
             </div>
           )}
           {isRightPanelCollapsed && (
-            <div className="w-full h-full flex flex-col space-y-4 justify-start items-center p-2">
-              <div className="w-full h-fit bg-green-500/30 p-2 rounded-md flex space-x-1 justify-center items-center">
-                <Phone className="w-5 h-5 text-green-500" />
-                <h1 className="font-bold text-xl">12</h1>
-              </div>
-              <div className="w-full h-fit bg-blue-500/30 p-2 rounded-md flex space-x-2 justify-center items-center">
-                <Pause className="w-5 h-5 text-blue-500" />
-                <h1 className="font-bold text-xl">6</h1>
-              </div>
-              <div className="w-full h-fit bg-orange-500/30 p-2 rounded-md flex space-x-2 justify-center items-center">
-                <PhoneIncoming className="w-5 h-5 text-orange-500" />
-                <h1 className="font-bold text-xl">6</h1>
+            <div className="w-full h-full flex flex-col space-y-4 justify-start items-center px-2">
+              <div className="w-full h-fit flex flex-col space-y-2 border-b-2 border-b-border pb-2">
+                <div className="w-full h-fit bg-green-500/30 hover:bg-green-500/50 duration-300 p-2 rounded-md flex space-x-1 justify-center items-center cursor-pointer" onClick={() => {
+                  setRightPanelCollapsed(false);
+                  handleFilterChange("all");
+                }}>
+                  <Phone className="w-5 h-5 text-green-500" />
+                  <h1 className="font-bold text-xl">12</h1>
+                </div>
+                <div className="w-full h-fit bg-blue-500/30 hover:bg-blue-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
+                  setRightPanelCollapsed(false);
+                  handleFilterChange("hold");
+                }}>
+                  <Pause className="w-5 h-5 text-blue-500" />
+                  <h1 className="font-bold text-xl">6</h1>
+                </div>
+                <div className="w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
+                  setRightPanelCollapsed(false);
+                  handleFilterChange("incoming");
+                }}>
+                  <PhoneIncoming className="w-5 h-5 text-orange-500" />
+                  <h1 className="font-bold text-xl">6</h1>
+                </div>
               </div>
             </div>
           )}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
+import { CircleX, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Search, Send, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -74,6 +74,9 @@ export default function Index() {
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [screenshotImage, setScreenshotImage] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewDocumentModalOpen, setIsViewDocumentModalOpen] = useState(false);
+  const [bookingId, setBookingId] = useState("");
+  const [bookingIdForSearch, setBookingIdForSearch] = useState("");
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -97,6 +100,7 @@ export default function Index() {
     setScreenshotImage([]);
     setIsModalOpen(false);
     setTakeScreenshot(false);
+    setBookingId("");
   };
 
   const handleTakeAnotherImage = () => {
@@ -106,17 +110,20 @@ export default function Index() {
 
   const handleDeleteImage = (index: number) => {
     const updatedImages = screenshotImage!.filter((_, i) => i !== index);
-    setScreenshotImage(updatedImages); // Assuming `setScreenshotImage` is used to update the state
+    setScreenshotImage(updatedImages);
   };
 
   const handleDocumentSubmit = () => {
     if (screenshotImage!.length === 0) {
       return toast.custom((t: any) => (<Toast t={t} type="warning" content="No document(s) captured" />));
     }
-    // Reset all states
+    if (bookingId === "") {
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID is required" />));
+    }
     setScreenshotImage([]);
     setIsModalOpen(false);
     setTakeScreenshot(false);
+    setBookingId("");
     toast.custom((t: any) => (<Toast t={t} type="success" content="Document(s) submitted successfully" />));
   }
 
@@ -129,6 +136,18 @@ export default function Index() {
     }
   }
 
+  const handleCloseViewDocumentModal = () => {
+    setIsViewDocumentModalOpen(false);
+  };
+
+  const handleSearchDocuments = () => {
+    if (bookingIdForSearch === "") {
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID is required" />));
+    }
+    // TODO: Implement Search Logic Here
+    setBookingIdForSearch("");
+    setIsViewDocumentModalOpen(false);
+  }
 
   return (
     <Layout headerTitle="CHECK-IN HUB" header={
@@ -181,7 +200,7 @@ export default function Index() {
                   </Tooltip>
                   <Tooltip tooltip="View Document(s)">
                     <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
-                      onClick={() => { setTakeScreenshot(true) }}>
+                      onClick={() => { setIsViewDocumentModalOpen(true) }}>
                       <FileSearch className="w-6 h-6" />
                     </button>
                   </Tooltip>
@@ -395,6 +414,8 @@ export default function Index() {
                   type="text"
                   placeholder="Booking ID"
                   className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                  onChange={(e) => setBookingId(e.target.value)}
+                  value={bookingId}
                 />
               </div>
               <div className="w-full flex space-x-2">
@@ -416,6 +437,62 @@ export default function Index() {
                   </button>
                 </div>
               </div>
+            </div>
+          )}
+        </Modal>
+      )}
+      {isViewDocumentModalOpen && (
+        <Modal title="View Document(s)" onClose={handleCloseViewDocumentModal}>
+          {screenshotImage && (
+            <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
+              <div className="w-full flex items-center gap-2">
+                <div className="w-full">
+                  <input
+                    type="text"
+                    placeholder="Booking ID"
+                    className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                    onChange={(e) => setBookingIdForSearch(e.target.value)}
+                    value={bookingIdForSearch}
+                  />
+                </div>
+                <div className="w-fit">
+                  <button
+                    className="w-full p-2 rounded-md bg-highlight text-text font-bold flex items-center justify-center gap-1"
+                    onClick={handleSearchDocuments}
+                  >
+                    <Search /> Search
+                  </button>
+                </div>
+              </div>
+              {/* Image Grid Container */}
+              {/* {screenshotImage.length > 0 ? (
+                <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center border-b-2 border-b-border pb-4">
+                  {screenshotImage.map((image, index) => (
+                    <div key={index} className="flex justify-center relative">
+                      <Image
+                        width={1000}
+                        height={1000}
+                        src={image}
+                        alt="Captured Document"
+                        className="max-w-full max-h-[80vh] object-contain rounded-md"
+                      />
+                      <Tooltip tooltip="Delete Document" position="top">
+                        <button
+                          className="absolute top-0 right-0"
+                          onClick={() => handleDeleteImage(index)}
+                        >
+                          <CircleX className="w-5 h-5 text-red-500" />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full h-full flex flex-col space-y-4 justify-center items-center border-b-2 border-b-border pb-4">
+                  <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
+                </div>
+              )
+              } */}
             </div>
           )}
         </Modal>

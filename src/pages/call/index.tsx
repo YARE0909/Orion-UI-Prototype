@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, Disc2, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
+import { CircleX, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -173,10 +173,10 @@ export default function Index() {
               {/* Toolbar */}
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
                 <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
-                  <Tooltip tooltip="Capture Document">
+                  <Tooltip tooltip="Capture Document(s)">
                     <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
                       onClick={() => { setTakeScreenshot(true) }}>
-                      <Disc2 className="w-6 h-6" />
+                      <FilePlus2 className="w-6 h-6" />
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="View Document(s)">

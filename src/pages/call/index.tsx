@@ -85,7 +85,6 @@ export default function Index() {
   });
 
   const handleScreenshot = (image: string) => {
-    console.log("Screenshot taken:", image);
     setScreenshotImage((prevImages) =>
       prevImages ? [...prevImages, image] : [image]
     );
@@ -164,11 +163,7 @@ export default function Index() {
                 <div className="w-full flex space-x-2">
                   <Tooltip tooltip="Capture Document">
                     <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
-                      onClick={() => {
-                        console.log("Capture Document");
-                        setTakeScreenshot(true)
-                      }}
-                    >
+                      onClick={() => { setTakeScreenshot(true) }}>
                       <Disc2 className="w-6 h-6" />
                     </button>
                   </Tooltip>

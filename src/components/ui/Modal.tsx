@@ -1,6 +1,7 @@
 // components/ui/Modal.tsx
 import { X } from 'lucide-react';
 import React from 'react';
+import Tooltip from './ToolTip';
 
 interface ModalProps {
   title: string;
@@ -14,9 +15,11 @@ const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
       <div className="bg-foreground rounded-lg p-6 w-11/12 md:w-1/3">
         <div className="flex justify-between items-center pb-4 border-b-2 border-border">
           <h2 className="text-xl font-bold">{title}</h2>
-          <button onClick={onClose}>
-            <X className='w-5 h-5' />
-          </button>
+          <Tooltip tooltip="Close" position="top">
+            <button onClick={onClose}>
+              <X className='w-6 h-6' />
+            </button>
+          </Tooltip>
         </div>
         <div className="pt-4">{children}</div>
       </div>

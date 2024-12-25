@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, Disc2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
+import { CircleX, Disc2, FilePlus2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -344,7 +344,7 @@ export default function Index() {
         </div>
       </div>
       {isModalOpen && (
-        <Modal title="Captured Document" onClose={closeModal}>
+        <Modal title="Captured Document(s)" onClose={closeModal}>
           {screenshotImage && (
             <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
               {/* Image Grid Container */}
@@ -356,9 +356,9 @@ export default function Index() {
                       height={1000}
                       src={image}
                       alt="Captured Document"
-                      className="max-w-full max-h-[80vh] object-contain border-md"
+                      className="max-w-full max-h-[80vh] object-contain rounded-md"
                     />
-                    <Tooltip tooltip="Delete Image" position="top">
+                    <Tooltip tooltip="Delete Document" position="top">
                       <button
                         className="absolute top-0 right-0"
                         onClick={() => handleDeleteImage(index)}
@@ -369,14 +369,7 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-              <div className="w-full">
-                <button
-                  className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
-                  onClick={handleTakeAnotherImage}
-                >
-                  Add Document
-                </button>
-              </div>
+
               <div className="w-full">
                 <input
                   type="text"
@@ -384,13 +377,24 @@ export default function Index() {
                   className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                 />
               </div>
-              <div className="w-full">
-                <button
-                  className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
-                  onClick={handleDocumentSubmit}
-                >
-                  Submit
-                </button>
+              <div className="w-full flex space-x-2">
+                <div className="w-full">
+                  <button
+                    className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold flex items-center justify-center gap-1"
+                    onClick={handleTakeAnotherImage}
+                  >
+                    <FilePlus2 /> Add Document
+                  </button>
+                </div>
+                <div className="w-full">
+                  <button
+                    className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold flex items-center justify-center gap-1"
+                    onClick={handleDocumentSubmit}
+                  >
+                    <Send />
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           )}

@@ -103,7 +103,7 @@ export default function Index() {
       </div>
       <div className="w-full h-full flex">
         {/* Left Panel */}
-        <div className={`h-[90vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
+        <div className={`h-[91vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
           {inCall ? (
             <div className="w-full h-full bg-black relative">
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
@@ -154,11 +154,10 @@ export default function Index() {
         </div>
 
         {/* Right Panel */}
-        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 px-2'} h-full`}>
+        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 pl-2'} h-[91vh]`}>
           {/* Summary Section */}
           {!isRightPanelCollapsed && (
-
-            <div className=" h-full flex flex-col space-y-4 overflow-hidden">
+            <div className=" h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
                 <div
                   className={`w-full bg-green-500/30 hover:bg-green-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}

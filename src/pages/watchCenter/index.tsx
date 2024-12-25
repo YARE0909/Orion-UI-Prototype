@@ -33,7 +33,7 @@ function WatchCard({ title, src }: { title: string; src?: any }) {
             <h1 className="font-bold text-lg text-white">{title}</h1>
           </div>
           <div className="flex space-x-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <Tooltip tooltip="Call Center" position="bottom">
+            <Tooltip tooltip="Call Location" position="bottom">
               <div
                 className="bg-green-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
                 onClick={() => router.push("/call")}
@@ -41,7 +41,7 @@ function WatchCard({ title, src }: { title: string; src?: any }) {
                 <PhoneOutgoing className="w-4 h-4 font-bold text-text" />
               </div>
             </Tooltip>
-            <Tooltip tooltip="Remove Center" position="bottom">
+            <Tooltip tooltip="Remove Location" position="bottom">
               <div
                 className="bg-red-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
               >
@@ -64,7 +64,7 @@ export default function Index() {
   return (
     <Layout headerTitle="WATCH CENTER" header={
       <div>
-        <Tooltip tooltip="Add Center" position="bottom">
+        <Tooltip tooltip="Add Location" position="bottom">
           <div>
             <MapPinPlus />
           </div>

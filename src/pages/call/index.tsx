@@ -72,37 +72,37 @@ export default function Index() {
   const [micMuted, setMicMuted] = useState(false);
   const [cameraOff, setCameraOff] = useState(false);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
-  const [screenshotImage, setScreenshotImage] = useState<string[] | null>(null);  // State to hold the screenshot image
+  const [screenshotImage, setScreenshotImage] = useState<string[] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Handle filter change
   const handleFilterChange = (status: string) => {
     setFilter(status);
   };
 
-  // Filter the MockCardData based on the selected status
   const filteredData = MockCardData.filter((card) => {
     if (filter === "all") return true;
     return card.status === filter;
   });
 
   const handleScreenshot = (image: string) => {
-    // Set the captured image and open the modal
     console.log("Screenshot taken:", image);
     setScreenshotImage((prevImages) =>
       prevImages ? [...prevImages, image] : [image]
     );
     setTakeScreenshot(false);
-    setIsModalOpen(true);  // Open the modal after screenshot is taken
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);  // Close the modal
+    setIsModalOpen(false);
+    setScreenshotImage(null);
+    setIsModalOpen(false);
+    setTakeScreenshot(false);
   };
 
   const handleTakeAnotherImage = () => {
-    setIsModalOpen(false); // Close modal for taking another screenshot
-    setTakeScreenshot(true); // Open the screenshot component again
+    setIsModalOpen(false);
+    setTakeScreenshot(true);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -191,13 +191,11 @@ export default function Index() {
                   <Tooltip tooltip="Hold Call">
                     <button className="w-fit rounded-md bg-indigo-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-indigo-700 duration-300" onClick={() => setInCall(false)}>
                       <Pause className="w-6 h-6" />
-                      {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="End Call">
                     <button className="w-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
                       <PhoneOff className="w-6 h-6" />
-                      {/* <h1 className="font-bold whitespace-nowrap">End Call</h1> */}
                     </button>
                   </Tooltip>
                 </div>
@@ -267,11 +265,9 @@ export default function Index() {
                 {filter === "all" && (
                   <>
                     {(() => {
-                      // Separate the calls by status
                       const incomingCalls = MockCardData.filter((card) => card.status === "incoming");
                       const holdCalls = MockCardData.filter((card) => card.status === "hold");
 
-                      // Interleave the calls to alternate statuses
                       const interleavedCalls: typeof MockCardData = [];
                       const maxLength = Math.max(incomingCalls.length, holdCalls.length);
 
@@ -280,7 +276,6 @@ export default function Index() {
                         if (i < holdCalls.length) interleavedCalls.push(holdCalls[i]);
                       }
 
-                      // Render the interleaved calls
                       return interleavedCalls.length > 0 ? (
                         interleavedCalls.map((card, index) => (
                           <CallingCard
@@ -299,8 +294,6 @@ export default function Index() {
                   </>
                 )}
 
-
-                {/* For other filters (hold, incoming, etc.) */}
                 {filter !== "all" && (
                   filteredData.length > 0 ? (
                     filteredData.map((card, index) => (
@@ -376,8 +369,6 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-
-              {/* Add Document Button */}
               <div className="w-full">
                 <button
                   className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
@@ -386,8 +377,6 @@ export default function Index() {
                   Add Document
                 </button>
               </div>
-
-              {/* Booking ID Input */}
               <div className="w-full">
                 <input
                   type="text"
@@ -395,8 +384,6 @@ export default function Index() {
                   className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                 />
               </div>
-
-              {/* Submit Button */}
               <div className="w-full">
                 <button
                   className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
@@ -408,7 +395,6 @@ export default function Index() {
             </div>
           )}
         </Modal>
-
       )}
     </Layout>
   );

@@ -147,7 +147,7 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
       >
         {!isCapturing && (
           <div
-            className="absolute bottom-0 right-0 w-2 h-2 bg-white cursor-se-resize rounded-sm"
+            className="absolute bottom-0 right-0 w-2 h-2 bg-transparent cursor-se-resize rounded-sm"
             onMouseDown={handleResizeStart}
           />
         )}

@@ -4,6 +4,7 @@ import MockCardData from "../../../mock/watchListMock.json";
 import { Disc2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
+import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
@@ -66,6 +67,7 @@ export default function Index() {
   const [isRightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const [micMuted, setMicMuted] = useState(false);
   const [cameraOff, setCameraOff] = useState(false);
+  const [takeScreenshot, setTakeScreenshot] = useState(false);
 
   // Handle filter change
   const handleFilterChange = (status: string) => {
@@ -77,6 +79,13 @@ export default function Index() {
     if (filter === "all") return true;
     return card.status === filter;
   });
+
+  const handleScreenshot = (image: string) => {
+    // Handle the captured image here
+    console.log("Captured Image:", image);
+    setTakeScreenshot(false);
+    // Example: Display the image in an <img> tag
+  };
 
   return (
     <Layout headerTitle="CHECK-IN HUB" header={
@@ -102,10 +111,32 @@ export default function Index() {
         <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
           {inCall ? (
             <div className="w-full h-full bg-black rounded-md relative">
+              {/* TODO: Implement Video Feed Below */}
+              <div className="w-full h-full">
+                <video
+                  autoPlay
+                  loop
+                  className="w-full h-full object-cover rounded-md"
+                  src="/videos/placeholder.mp4"
+                />
+              </div>
+
+              {/* Screenshot Component */}
+              {takeScreenshot && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+                  <ScreenshotComponent onScreenshotTaken={handleScreenshot} />
+                </div>
+              )}
+              {/* Toolbar */}
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
                 <div className="w-full flex space-x-2">
                   <Tooltip tooltip="Capture Document">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1">
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
+                      onClick={() => {
+                        console.log("Capture Document");
+                        setTakeScreenshot(true)
+                      }}
+                    >
                       <Disc2 className="w-6 h-6" />
                     </button>
                   </Tooltip>

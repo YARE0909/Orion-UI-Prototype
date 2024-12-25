@@ -199,7 +199,7 @@ export default function Index() {
                 </div>
               </div>
               {/* Grid Section */}
-              <div className="w-full h-full overflow-y-auto pb-16 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden">
+              <div className="w-full h-full overflow-y-auto pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden">
                 {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
                 {filter === "all" && (
                   <>

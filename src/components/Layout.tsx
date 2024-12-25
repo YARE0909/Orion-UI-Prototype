@@ -1,4 +1,4 @@
-import { Menu, Moon, Settings, Sun } from "lucide-react";
+import { LogOut, Menu, Moon, Settings, Sun } from "lucide-react";
 import Dropdown from "./ui/DropDown";
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
@@ -27,8 +27,13 @@ export default function Index({
     {
       "id": "toggleTheme",
       "name": theme === 'light' ? "Dark Mode" : "Light Mode",
-      "icon": theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />
+      "icon": theme === 'light' ? <Moon className="w-5 h-5 text-blue-600" /> : <Sun className="w-5 h-5 text-yellow-300" />
     },
+    {
+      "id": "logout",
+      "name": "Logout",
+      "icon": <LogOut className="w-5 h-5 text-red-500" />
+    }
   ];
 
   const handleSelect = (id: string) => {

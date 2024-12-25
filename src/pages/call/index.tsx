@@ -1,62 +1,59 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CameraOff, Disc2, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff } from "lucide-react";
+import { Disc2, Menu, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
+import Tooltip from "@/components/ToolTip";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
     <div className="w-full h-full bg-highlight rounded-lg p-4 flex flex-col space-y-2 justify-between">
-      <div className="w-full flex justify-between border-b-2 border-b-border pb-1">
-        <div>
-          {
-            status === "incoming" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-orange-500/30 text-orange-500 px-2">
-                INCOMING CALL
-              </h1>
-            )
-          }
-          {
-            status === "active" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-green-500/30 text-green-500 px-2">
-                ACTIVE
-              </h1>
-            )
-          }
-          {
-            status === "hold" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-blue-500/30 text-blue-500 px-2">
-                ON HOLD
-              </h1>
-            )
-          }
-          <h1 className="font-bold">{title}</h1>
+      <div className="w-full flex flex-col gap-2 justify-between pb-1">
+        <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
+          <div>
+            {
+              status === "incoming" && (
+                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-orange-500/30 text-orange-500 px-2">
+                  INCOMING CALL
+                </h1>
+              )
+            }
+            {
+              status === "active" && (
+                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-green-500/30 text-green-500 px-2">
+                  ACTIVE
+                </h1>
+              )
+            }
+            {
+              status === "hold" && (
+                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-blue-500/30 text-blue-500 px-2">
+                  ON HOLD
+                </h1>
+              )
+            }
+          </div>
+          <div>
+            <h1 className="w-fit text-[0.65rem] font-bold rounded bg-border text-white px-2">00:00</h1>
+          </div>
         </div>
-        <div>
-          <h1 className="w-fit text-[0.65rem] font-bold rounded bg-white/20 text-white px-2">00:00</h1>
+        <div className="h-fit flex justify-between items-start space-x-3">
+          <div>
+            <h1 className="font-bold">{title}</h1>
+          </div>
+          <div>
+            <Tooltip tooltip={
+              status === "incoming" ? "Accept Call" : "Resume Call"
+            } position="bottom">
+              <button className="w-fit h-fit whitespace-nowrap rounded-md bg-green-300/70 hover:bg-green-300/50 dark:bg-green-500/30 dark:hover:bg-green-500/50 duration-300 font-bold text-sm justify-center items-center flex px-4 py-1" onClick={() => setInCall(true)}>
+                {status === "incoming" ?
+                  <Phone className="w-4 h-4" /> :
+                  <Play className="w-4 h-4" />
+                }
+              </button>
+            </Tooltip>
+          </div>
         </div>
-      </div>
-      <div className="w-full flex space-x-2">
-        {
-          status === "hold" ? (
-            <div className="w-full flex justify-center space-x-2">
-              <button className="w-full h-fit whitespace-nowrap rounded-md px-4 py-1 bg-green-500 font-bold text-sm justify-center items-center flex" onClick={() => setInCall(true)}>
-                <Phone className="w-4 h-4" />
-              </button>
-              <button className="w-full h-fit whitespace-nowrap rounded-md px-4 py-1 bg-red-500 font-bold text-sm justify-center items-center flex" onClick={() => setInCall(false)}>
-                <PhoneOff className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <div className="w-full flex space-x-2">
-              <button className="w-full h-fit whitespace-nowrap rounded-md px-4 py-1 bg-green-500 font-bold text-sm justify-center items-center flex" onClick={() => setInCall(true)}>
-                <Phone className="w-4 h-4" />
-              </button>
-              <button className="w-full h-fit whitespace-nowrap rounded-md px-4 py-1 bg-red-500 font-bold text-sm justify-center items-center flex" onClick={() => setInCall(false)}>
-                <PhoneOff className="w-4 h-4" />
-              </button>
-            </div>
-          )
-        }
       </div>
     </div>
   );
@@ -84,11 +81,25 @@ export default function Index() {
     <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-2">
       <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2">
         <h1 className="font-bold text-2xl">CALL MANAGER</h1>
-        <button
-          onClick={() => setRightPanelCollapsed(!isRightPanelCollapsed)}
-        >
-          {isRightPanelCollapsed ? <PanelLeftClose /> : <PanelRightClose />}
-        </button>
+        <div className="flex items-center space-x-3 pr-4">
+          <Tooltip tooltip="Menu" position="bottom">
+            <div>
+              <Menu />
+            </div>
+          </Tooltip>
+          <Tooltip tooltip={
+            isRightPanelCollapsed ? "Expand Panel" : "Collapse Panel"
+          } position="bottom">
+            <div
+              onClick={() => setRightPanelCollapsed(!isRightPanelCollapsed)}
+            >
+              {isRightPanelCollapsed ? <PanelLeftClose /> : <PanelRightClose />}
+            </div>
+          </Tooltip>
+          <div className="border-l-2 border-l-border pl-2 items-center flex">
+            <ThemeToggle />
+          </div>
+        </div>
       </div>
       <div className="w-full h-full flex">
         {/* Left Panel */}
@@ -96,31 +107,40 @@ export default function Index() {
           {inCall ? (
             <div className="w-full h-full bg-black relative">
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
-                <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
-                  <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1">
-                    <Disc2 className="w-6 h-6" />
-                    <h1 className="font-bold whitespace-nowrap">Capture Document</h1>
-                  </button>
+                <div className="w-full flex space-x-2">
+                  <Tooltip tooltip="Capture Document">
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1">
+                      <Disc2 className="w-6 h-6" />
+                    </button>
+                  </Tooltip>
                 </div>
                 <div className="w-full flex space-x-2">
-                  <button className={micMuted ? "bg-orange-500 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1"} onClick={() => {
-                    setMicMuted(!micMuted)
-                  }}>
-                    <MicOff className="w-6 h-6" />
-                  </button>
-                  <button className={cameraOff ? "bg-orange-500 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1"} onClick={() => {
-                    setCameraOff(!cameraOff)
-                  }}>
-                    <CameraOff className="w-6 h-6" />
-                  </button>
-                  <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
-                    <Pause className="w-6 h-6" />
-                    {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
-                  </button>
-                  <button className="w-fit rounded-md bg-red-500 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
-                    <PhoneOff className="w-6 h-6" />
-                    {/* <h1 className="font-bold whitespace-nowrap">End Call</h1> */}
-                  </button>
+                  <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
+                    <button className={micMuted ? "bg-orange-500 hover:bg-orange-400 duration-300 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
+                      setMicMuted(!micMuted)
+                    }}>
+                      <MicOff className="w-6 h-6" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
+                    <button className={cameraOff ? "bg-orange-500 hover:bg-orange-400 duration-300 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
+                      setCameraOff(!cameraOff)
+                    }}>
+                      <VideoOff className="w-6 h-6" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip tooltip="Hold Call">
+                    <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300" onClick={() => setInCall(false)}>
+                      <Pause className="w-6 h-6" />
+                      {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
+                    </button>
+                  </Tooltip>
+                  <Tooltip tooltip="End Call">
+                    <button className="w-fit rounded-md bg-red-600 hover:bg-red-500 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
+                      <PhoneOff className="w-6 h-6" />
+                      {/* <h1 className="font-bold whitespace-nowrap">End Call</h1> */}
+                    </button>
+                  </Tooltip>
                 </div>
               </div>
             </div>
@@ -184,32 +204,27 @@ export default function Index() {
                 </div>
               </div>
               {/* Grid Section */}
-              <div className="w-full h-full overflow-y-auto pb-16 grid grid-cols-2 gap-2 auto-rows-min">
+              <div className="w-full h-full overflow-y-auto pb-16 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden">
                 {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
                 {filter === "all" && (
                   <>
-                    {/* Incoming Calls */}
-                    <div className="flex flex-col space-y-2">
-                      {MockCardData.filter((card) => card.status === "incoming").length > 0 ? (
-                        MockCardData.filter((card) => card.status === "incoming").map((card, index) => (
-                          <CallingCard
-                            key={index}
-                            title={card.title}
-                            status={card.status}
-                            setInCall={setInCall}
-                          />
-                        ))
-                      ) : (
-                        <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                          <h1 className="text-center text-xl text-textAlt font-bold">No Incoming Calls</h1>
-                        </div>
-                      )}
-                    </div>
+                    {(() => {
+                      // Separate the calls by status
+                      const incomingCalls = MockCardData.filter((card) => card.status === "incoming");
+                      const holdCalls = MockCardData.filter((card) => card.status === "hold");
 
-                    {/* On Hold Calls */}
-                    <div className="flex flex-col space-y-2">
-                      {MockCardData.filter((card) => card.status === "hold").length > 0 ? (
-                        MockCardData.filter((card) => card.status === "hold").map((card, index) => (
+                      // Interleave the calls to alternate statuses
+                      const interleavedCalls: typeof MockCardData = [];
+                      const maxLength = Math.max(incomingCalls.length, holdCalls.length);
+
+                      for (let i = 0; i < maxLength; i++) {
+                        if (i < incomingCalls.length) interleavedCalls.push(incomingCalls[i]);
+                        if (i < holdCalls.length) interleavedCalls.push(holdCalls[i]);
+                      }
+
+                      // Render the interleaved calls
+                      return interleavedCalls.length > 0 ? (
+                        interleavedCalls.map((card, index) => (
                           <CallingCard
                             key={index}
                             title={card.title}
@@ -218,13 +233,14 @@ export default function Index() {
                           />
                         ))
                       ) : (
-                        <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                          <h1 className="text-center text-xl text-textAlt font-bold">No Calls On Hold</h1>
+                        <div className="col-span-full w-full rounded-md border-2 border-dashed border-border p-4">
+                          <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
                         </div>
-                      )}
-                    </div>
+                      );
+                    })()}
                   </>
                 )}
+
 
                 {/* For other filters (hold, incoming, etc.) */}
                 {filter !== "all" && (

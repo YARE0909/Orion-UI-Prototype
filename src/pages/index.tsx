@@ -2,8 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from "next/router";
 import MockCardData from "../../mock/watchListMock.json";
-import { PhoneOutgoing, Trash } from "lucide-react";
+import { MapPinPlus, PhoneOutgoing, Trash } from "lucide-react";
 import Select from "@/components/Select";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import Tooltip from "@/components/ToolTip";
 
 const options = [
   { label: "Add Center", value: "all" },
@@ -37,22 +39,26 @@ function WatchCard({ title, src }: { title: string; src?: any }) {
           </div>
         )}
         {/* Header */}
-        <div className="w-full flex justify-between items-center absolute top-0 left-0 px-2 py-2 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-md">
+        <div className="w-full h-8 flex justify-between items-center absolute top-0 left-0 px-2 py-2 bg-black/60 rounded-t-md">
           <div>
-            <h1 className="font-bold text-lg">{title}</h1>
+            <h1 className="font-bold text-lg text-white">{title}</h1>
           </div>
-          <div className="flex space-x-2">
-            <div
-              className="bg-green-500 rounded-md py-1 px-4 cursor-pointer"
-              onClick={() => router.push("/call")}
-            >
-              <PhoneOutgoing className="w-5 h-5 font-bold text-text" />
-            </div>
-            <div
-              className="bg-red-500 rounded-md py-1 px-4 cursor-pointer"
-            >
-              <Trash className="w-5 h-5 font-bold text-text" />
-            </div>
+          <div className="flex space-x-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Tooltip tooltip="Call Center" position="bottom">
+              <div
+                className="bg-green-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
+                onClick={() => router.push("/call")}
+              >
+                <PhoneOutgoing className="w-4 h-4 font-bold text-text" />
+              </div>
+            </Tooltip>
+            <Tooltip tooltip="Remove Center" position="bottom">
+              <div
+                className="bg-red-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
+              >
+                <Trash className="w-4 h-4 font-bold text-text" />
+              </div>
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -72,11 +78,16 @@ export default function Index() {
         <div>
           <h1 className="font-bold text-2xl">WATCH CENTER</h1>
         </div>
-        <div>
-          <Select options={options} defaultValue="all" onChange={handleSelectChange} />
+        <div className="flex items-center space-x-3 pr-4">
+          <Tooltip tooltip="Add Center" position="bottom">
+            <div>
+              <MapPinPlus />
+            </div>
+          </Tooltip>
+          <ThemeToggle />
         </div>
       </div>
-      <div className="w-full h-full overflow-y-auto pb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-stretch">
+      <div className="w-full h-full overflow-y-auto overflow-x-hidden pb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-stretch">
         {MockCardData.map((card, index) => (
           <WatchCard key={index} title={card.title} src="/videos/placeholder.mp4" />
         ))}

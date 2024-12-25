@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 :root {
+  --background: #e5e5e3;
+  --foreground: #c4c4c4;
+  --default-text: #000000;
+  --border-color: #c4c4c4;
+  --alt-text: #4c4c54;
+  --highlight: #f5f5f5;
+}
+
+.dark {
   --background: #1a1a1c;
   --foreground: #151517;
   --default-text: #ffffff;
@@ -12,9 +21,6 @@
 }
 
 body {
-  color: var(--default-text);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   @apply font-NunitoSans text-text bg-background;
 }
 

@@ -7,7 +7,7 @@ import Layout from "@/components/Layout";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
-    <div className="w-full h-full bg-highlight rounded-lg p-4 flex flex-col space-y-2 justify-between">
+    <div className="w-full h-full bg-foreground rounded-lg p-4 flex flex-col space-y-2 justify-between">
       <div className="w-full flex flex-col gap-2 justify-between pb-1">
         <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
           <div>
@@ -27,14 +27,14 @@ function CallingCard({ title, status, setInCall }: { title: string, status: stri
             }
             {
               status === "hold" && (
-                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-blue-500/30 text-blue-500 px-2">
+                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-indigo-500/30 text-indigo-500 px-2">
                   ON HOLD
                 </h1>
               )
             }
           </div>
           <div>
-            <h1 className="w-fit text-[0.65rem] font-bold rounded bg-border text-white px-2">00:00</h1>
+            <h1 className="w-fit text-[0.65rem] font-bold rounded bg-highlight text-text px-2">00:00</h1>
           </div>
         </div>
         <div className="h-fit flex justify-between items-start space-x-3">
@@ -45,7 +45,7 @@ function CallingCard({ title, status, setInCall }: { title: string, status: stri
             <Tooltip tooltip={
               status === "incoming" ? "Accept Call" : "Resume Call"
             } position="bottom">
-              <button className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming" ? "bg-green-500/30 hover:bg-green-500/50 border-2 border-green-500" : "bg-blue-500/30 hover:bg-blue-500/50 border-2 border-blue-500"
+              <button className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming" ? "bg-green-500/30 hover:bg-green-500/50 border-2 border-green-500" : "bg-indigo-500/30 hover:bg-indigo-500/50 border-2 border-indigo-500"
                 } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`} onClick={() => setInCall(true)}>
                 {status === "incoming" ?
                   <Phone className="w-4 h-4" /> :
@@ -79,7 +79,7 @@ export default function Index() {
   });
 
   return (
-    <Layout headerTitle="CALL MANAGER" header={
+    <Layout headerTitle="CHECK-IN HUB" header={
       <div>
         {
           !isRightPanelCollapsed ? (
@@ -112,27 +112,27 @@ export default function Index() {
                 </div>
                 <div className="w-full flex space-x-2">
                   <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
-                    <button className={micMuted ? "bg-orange-500 hover:bg-orange-400 duration-300 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
+                    <button className={micMuted ? "bg-orange-500 hover:bg-orange-700 duration-300 w-fit rounded-md bg-foreground px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
                       setMicMuted(!micMuted)
                     }}>
                       <MicOff className="w-6 h-6" />
                     </button>
                   </Tooltip>
                   <Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
-                    <button className={cameraOff ? "bg-orange-500 hover:bg-orange-400 duration-300 w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
+                    <button className={cameraOff ? "bg-orange-500 hover:bg-orange-700 duration-300 w-fit rounded-md bg-foreground px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
                       setCameraOff(!cameraOff)
                     }}>
                       <VideoOff className="w-6 h-6" />
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="Hold Call">
-                    <button className="w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300" onClick={() => setInCall(false)}>
+                    <button className="w-fit rounded-md bg-indigo-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-indigo-700 duration-300" onClick={() => setInCall(false)}>
                       <Pause className="w-6 h-6" />
                       {/* <h1 className="font-bold whitespace-nowrap">Hold</h1> */}
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="End Call">
-                    <button className="w-fit rounded-md bg-red-600 hover:bg-red-500 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
+                    <button className="w-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
                       <PhoneOff className="w-6 h-6" />
                       {/* <h1 className="font-bold whitespace-nowrap">End Call</h1> */}
                     </button>
@@ -141,7 +141,7 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <div className="w-full h-full bg-highlight rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
+            <div className="w-full h-full bg-foreground rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
               <div>
                 <h1 className="font-bold text-2xl text-textAlt">Not In Call</h1>
               </div>
@@ -170,15 +170,15 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-blue-500/30 hover:bg-blue-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-blue-500" : "border-transparent"}`}
+                  className={`w-full bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
-                    <div className="border-r-2 border-r-blue-500 pr-2">
-                      <Pause className="w-6 h-6 text-blue-500" />
+                    <div className="border-r-2 border-r-indigo-500 pr-2">
+                      <Pause className="w-6 h-6 text-indigo-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold rounded text-blue-500">ON HOLD</h1>
+                      <h1 className="w-fit text-xs font-bold rounded text-indigo-500">ON HOLD</h1>
                       <h1 className="font-bold text-2xl">6</h1>
                     </div>
                   </div>
@@ -255,27 +255,33 @@ export default function Index() {
           {isRightPanelCollapsed && (
             <div className="w-full h-full flex flex-col space-y-4 justify-start items-center px-2">
               <div className="w-full h-fit flex flex-col space-y-2 border-b-2 border-b-border pb-2">
-                <div className="w-full h-fit bg-green-500/30 hover:bg-green-500/50 duration-300 p-2 rounded-md flex space-x-1 justify-center items-center cursor-pointer" onClick={() => {
-                  setRightPanelCollapsed(false);
-                  handleFilterChange("all");
-                }}>
-                  <Phone className="w-5 h-5 text-green-500" />
-                  <h1 className="font-bold text-xl">12</h1>
-                </div>
-                <div className="w-full h-fit bg-blue-500/30 hover:bg-blue-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
-                  setRightPanelCollapsed(false);
-                  handleFilterChange("hold");
-                }}>
-                  <Pause className="w-5 h-5 text-blue-500" />
-                  <h1 className="font-bold text-xl">6</h1>
-                </div>
-                <div className="w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
-                  setRightPanelCollapsed(false);
-                  handleFilterChange("incoming");
-                }}>
-                  <PhoneIncoming className="w-5 h-5 text-orange-500" />
-                  <h1 className="font-bold text-xl">6</h1>
-                </div>
+                <Tooltip tooltip="All Calls" position="left">
+                  <div className="w-full h-fit bg-green-500/30 hover:bg-green-500/50 duration-300 p-2 rounded-md flex space-x-1 justify-center items-center cursor-pointer" onClick={() => {
+                    setRightPanelCollapsed(false);
+                    handleFilterChange("all");
+                  }}>
+                    <Phone className="w-5 h-5 text-green-500" />
+                    <h1 className="font-bold text-xl">12</h1>
+                  </div>
+                </Tooltip>
+                <Tooltip tooltip="On Hold" position="left">
+                  <div className="w-full h-fit bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
+                    setRightPanelCollapsed(false);
+                    handleFilterChange("hold");
+                  }}>
+                    <Pause className="w-5 h-5 text-indigo-500" />
+                    <h1 className="font-bold text-xl">6</h1>
+                  </div>
+                </Tooltip>
+                <Tooltip tooltip="Incoming" position="left">
+                  <div className="w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 p-2 rounded-md flex space-x-2 justify-center items-center cursor-pointer" onClick={() => {
+                    setRightPanelCollapsed(false);
+                    handleFilterChange("incoming");
+                  }}>
+                    <PhoneIncoming className="w-5 h-5 text-orange-500" />
+                    <h1 className="font-bold text-xl">6</h1>
+                  </div>
+                </Tooltip>
               </div>
             </div>
           )}

@@ -10,7 +10,7 @@ function WatchCard({ title, src }: { title: string; src?: any }) {
   const router = useRouter();
 
   return (
-    <div className="w-full h-56 flex flex-col space-y-4 bg-highlight rounded-lg group">
+    <div className="w-full h-56 flex flex-col space-y-4 bg-foreground rounded-lg group">
       <div className="w-full h-full bg-background flex items-center justify-center rounded-lg relative">
         {src ? (
           <video

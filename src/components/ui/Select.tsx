@@ -39,7 +39,7 @@ const Select: React.FC<CustomSelectProps> = ({ options, defaultValue, onChange }
           {options.map((option) => (
             <div
               key={option.value}
-              className="px-4 py-2 cursor-pointer hover:bg-highlight whitespace-nowrap"
+              className="px-4 py-2 cursor-pointer hover:bg-foreground whitespace-nowrap"
               onClick={() => handleOptionClick(option)}
             >
               {option.label}

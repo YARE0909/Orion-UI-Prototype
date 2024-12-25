@@ -9,6 +9,7 @@ import {
   Settings,
   Moon,
   Sun,
+  MapPin,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -33,6 +34,16 @@ const sideBarLinks = [
         name: "MANAGE USERS",
         icon: <UsersRound className="w-5 h-5" />,
         href: "/admin/users",
+      },
+    ],
+  },
+  {
+    category: "LOCATIONS",
+    links: [
+      {
+        name: "MANAGE LOCATIONS",
+        icon: <MapPin className="w-5 h-5" />,
+        href: "/admin/locations",
       },
     ],
   }

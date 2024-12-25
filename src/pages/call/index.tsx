@@ -79,7 +79,7 @@ export default function Index() {
   });
 
   return (
-    <Layout headerTitle="Call Center" header={
+    <Layout headerTitle="CALL MANAGER" header={
       <div>
         {
           !isRightPanelCollapsed ? (

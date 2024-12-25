@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { Disc2, Menu, MicOff, PanelLeftClose, PanelRightClose, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
-import Tooltip from "@/components/ToolTip";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Disc2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
+import Tooltip from "@/components/ui/ToolTip";
+import Layout from "@/components/Layout";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
@@ -45,7 +45,8 @@ function CallingCard({ title, status, setInCall }: { title: string, status: stri
             <Tooltip tooltip={
               status === "incoming" ? "Accept Call" : "Resume Call"
             } position="bottom">
-              <button className="w-fit h-fit whitespace-nowrap rounded-md bg-green-300/70 hover:bg-green-300/50 dark:bg-green-500/30 dark:hover:bg-green-500/50 duration-300 font-bold text-sm justify-center items-center flex px-4 py-1" onClick={() => setInCall(true)}>
+              <button className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming" ? "bg-green-500/30 hover:bg-green-500/50 border-2 border-green-500" : "bg-blue-500/30 hover:bg-blue-500/50 border-2 border-blue-500"
+                } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`} onClick={() => setInCall(true)}>
                 {status === "incoming" ?
                   <Phone className="w-4 h-4" /> :
                   <Play className="w-4 h-4" />
@@ -78,34 +79,29 @@ export default function Index() {
   });
 
   return (
-    <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-2">
-      <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2">
-        <h1 className="font-bold text-2xl">CALL MANAGER</h1>
-        <div className="flex items-center space-x-3 pr-4">
-          <Tooltip tooltip="Menu" position="bottom">
-            <div>
-              <Menu />
-            </div>
-          </Tooltip>
-          <Tooltip tooltip={
-            isRightPanelCollapsed ? "Expand Panel" : "Collapse Panel"
-          } position="bottom">
-            <div
-              onClick={() => setRightPanelCollapsed(!isRightPanelCollapsed)}
-            >
-              {isRightPanelCollapsed ? <PanelLeftClose /> : <PanelRightClose />}
-            </div>
-          </Tooltip>
-          <div className="border-l-2 border-l-border pl-2 items-center flex">
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
+    <Layout headerTitle="Call Center" header={
+      <div>
+        {
+          !isRightPanelCollapsed ? (
+            <Tooltip tooltip="Close Panel" position="bottom">
+              <div className="w-fit h-fit rounded-md flex items-center justify-center cursor-pointer" onClick={() => setRightPanelCollapsed(true)}>
+                <PanelRightClose className="w-6 h-6" />
+              </div>
+            </Tooltip>
+          ) : (
+            <Tooltip tooltip="Open Panel" position="bottom">
+              <div className="w-fit h-fit rounded-md flex items-center justify-center cursor-pointer" onClick={() => setRightPanelCollapsed(false)}>
+                <PanelRightOpen className="w-6 h-6" />
+              </div>
+            </Tooltip>
+          )
+        }
+      </div>}>
       <div className="w-full h-full flex">
         {/* Left Panel */}
-        <div className={`h-[91vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
+        <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
           {inCall ? (
-            <div className="w-full h-full bg-black relative">
+            <div className="w-full h-full bg-black rounded-md relative">
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
                 <div className="w-full flex space-x-2">
                   <Tooltip tooltip="Capture Document">
@@ -145,7 +141,7 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <div className="w-full h-full mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
+            <div className="w-full h-full bg-highlight rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
               <div>
                 <h1 className="font-bold text-2xl text-textAlt">Not In Call</h1>
               </div>
@@ -154,7 +150,7 @@ export default function Index() {
         </div>
 
         {/* Right Panel */}
-        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 pl-2'} h-[91vh]`}>
+        <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 pl-2'} h-[90.5vh]`}>
           {/* Summary Section */}
           {!isRightPanelCollapsed && (
             <div className=" h-full flex flex-col space-y-2 overflow-hidden">
@@ -285,6 +281,6 @@ export default function Index() {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

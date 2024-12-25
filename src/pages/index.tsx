@@ -2,20 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from "next/router";
 import MockCardData from "../../mock/watchListMock.json";
-import { MapPinPlus, PhoneOutgoing, Trash } from "lucide-react";
-import Select from "@/components/Select";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import Tooltip from "@/components/ToolTip";
-
-const options = [
-  { label: "Add Center", value: "all" },
-  { label: "Olive Banshankari", value: "banshankari" },
-  { label: "Olive Indiranagar", value: "indiranagar" },
-  { label: "Olive Koramangala", value: "koramangala" },
-  { label: "Olive Marathahalli", value: "marathahalli" },
-  { label: "Olive Whitefield", value: "whitefield" },
-  { label: "Olive Yelahanka", value: "yelahanka" },
-];
+import { MapPinPlus, Minus, PhoneOutgoing } from "lucide-react";
+import Tooltip from "@/components/ui/ToolTip";
+import Layout from "@/components/Layout";
 
 function WatchCard({ title, src }: { title: string; src?: any }) {
   const router = useRouter();
@@ -56,7 +45,7 @@ function WatchCard({ title, src }: { title: string; src?: any }) {
               <div
                 className="bg-red-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
               >
-                <Trash className="w-4 h-4 font-bold text-text" />
+                <Minus className="w-4 h-4 font-bold text-text" />
               </div>
             </Tooltip>
           </div>
@@ -73,25 +62,19 @@ export default function Index() {
 
 
   return (
-    <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-4">
-      <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center">
-        <div>
-          <h1 className="font-bold text-2xl">WATCH CENTER</h1>
-        </div>
-        <div className="flex items-center space-x-3 pr-4">
-          <Tooltip tooltip="Add Center" position="bottom">
-            <div>
-              <MapPinPlus />
-            </div>
-          </Tooltip>
-          <ThemeToggle />
-        </div>
-      </div>
+    <Layout headerTitle="WATCH CENTER" header={
+      <div>
+        <Tooltip tooltip="Add Center" position="bottom">
+          <div>
+            <MapPinPlus />
+          </div>
+        </Tooltip>
+      </div>}>
       <div className="w-full h-full overflow-y-auto overflow-x-hidden pb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-stretch">
         {MockCardData.map((card, index) => (
           <WatchCard key={index} title={card.title} src="/videos/placeholder.mp4" />
         ))}
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../context/ThemeContext';
 import { Moon, Sun } from 'lucide-react';
 import Tooltip from './ToolTip';
+import { ThemeContext } from '@/context/ThemeContext';
 
 export const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);

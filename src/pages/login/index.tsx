@@ -22,7 +22,7 @@ export default function Login() {
     }
 
     toast.custom((t: any) => <Toast content="Logged In Successfully!" type="success" t={t} />);
-    return router.push("/");
+    return router.push("/watchCenter");
   }
 
   return (

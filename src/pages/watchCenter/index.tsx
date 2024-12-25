@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from "next/router";
-import MockCardData from "../../mock/watchListMock.json";
+import MockCardData from "../../../mock/watchListMock.json";
 import { MapPinPlus, Minus, PhoneOutgoing } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";

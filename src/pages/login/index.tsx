@@ -1,11 +1,25 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     userName: '',
     password: ''
   });
+
+  const router = useRouter();
+
+  const handleLogIn = () => {
+    if (formData.userName === "") {
+      return toast.error("Username is required.");
+    }
+    if (formData.password === "") {
+      return toast.error("Password is required.");
+    }
+    router.push("/");
+  }
 
   return (
     <div className="flex h-screen">
@@ -58,6 +72,7 @@ export default function Login() {
             <div className="w-full">
               <button
                 className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
+                onClick={handleLogIn}
               >Login</button>
             </div>
           </div>

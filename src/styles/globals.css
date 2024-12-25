@@ -32,3 +32,7 @@ body {
   background: var(--alt-text);
   border-radius: 5px;
 }
+
+.toastStyle {
+  @apply bg-background text-text;
+}

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Toast from "@/components/ui/Toast";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -13,12 +15,14 @@ export default function Login() {
 
   const handleLogIn = () => {
     if (formData.userName === "") {
-      return toast.error("Username is required.");
+      return toast.custom((t: any) => <Toast content="Username is required." type="warning" t={t} />);
     }
     if (formData.password === "") {
-      return toast.error("Password is required.");
+      return toast.custom((t: any) => <Toast content="Password is required." type="warning" t={t} />);
     }
-    router.push("/");
+
+    toast.custom((t: any) => <Toast content="Logged In Successfully!" type="success" t={t} />);
+    return router.push("/");
   }
 
   return (

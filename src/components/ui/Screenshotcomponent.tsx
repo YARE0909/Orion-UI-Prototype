@@ -93,6 +93,8 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
         width,
         height,
         scrollY: -window.scrollY, // Adjust for scrolling
+        scale: window.devicePixelRatio, // High-quality screenshot
+        backgroundColor: null, // Preserve transparency
       });
 
       const image = canvas.toDataURL("image/png");
@@ -103,8 +105,6 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
       if (screenshotButton) screenshotButton.style.visibility = "visible";
     }
   };
-
-
 
   // Event listeners for mouse move and up
   React.useEffect(() => {
@@ -129,13 +129,13 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
 
   return (
     <div
-      className="w-full h-full relative flex flex-col items-center justify-center bg-transparent z-50"
+      className="w-full h-full relative flex flex-col items-center justify-center z-50"
       ref={containerRef}
     >
       {/* Resizable and draggable capture area */}
       <div
         ref={boxRef}
-        className={`absolute rounded-md bg-transparent cursor-move ${isCapturing ? "" : "border-2 border-dashed border-white"
+        className={`absolute rounded-md cursor-move ${isCapturing ? "" : "border-4 border-white"
           }`}
         style={{
           width: `${boxSize.width}px`,
@@ -147,7 +147,7 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
       >
         {!isCapturing && (
           <div
-            className="absolute bottom-0 right-0 w-2 h-2 bg-indigo-500 cursor-se-resize rounded-sm bg-transparent"
+            className="absolute bottom-0 right-0 w-2 h-2 bg-white cursor-se-resize rounded-sm"
             onMouseDown={handleResizeStart}
           />
         )}

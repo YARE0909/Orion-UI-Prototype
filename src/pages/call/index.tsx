@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { Disc2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff } from "lucide-react";
+import { CircleX, Disc2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, VideoOff, X } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
+import Modal from "@/components/ui/Modal";
+import Image from "next/image";
+import toast from "react-hot-toast";
+import Toast from "@/components/ui/Toast";
 
 function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
   return (
@@ -68,6 +72,8 @@ export default function Index() {
   const [micMuted, setMicMuted] = useState(false);
   const [cameraOff, setCameraOff] = useState(false);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
+  const [screenshotImage, setScreenshotImage] = useState<string[] | null>(null);  // State to hold the screenshot image
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Handle filter change
   const handleFilterChange = (status: string) => {
@@ -81,11 +87,37 @@ export default function Index() {
   });
 
   const handleScreenshot = (image: string) => {
-    // Handle the captured image here
-    console.log("Captured Image:", image);
+    // Set the captured image and open the modal
+    console.log("Screenshot taken:", image);
+    setScreenshotImage((prevImages) =>
+      prevImages ? [...prevImages, image] : [image]
+    );
     setTakeScreenshot(false);
-    // Example: Display the image in an <img> tag
+    setIsModalOpen(true);  // Open the modal after screenshot is taken
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);  // Close the modal
+  };
+
+  const handleTakeAnotherImage = () => {
+    setIsModalOpen(false); // Close modal for taking another screenshot
+    setTakeScreenshot(true); // Open the screenshot component again
+  };
+
+  const handleDeleteImage = (index: number) => {
+    const updatedImages = screenshotImage!.filter((_, i) => i !== index);
+    setScreenshotImage(updatedImages); // Assuming `setScreenshotImage` is used to update the state
+  };
+
+  const handleDocumentSubmit = () => {
+    // Reset all states
+    setScreenshotImage(null);
+    setIsModalOpen(false);
+    setTakeScreenshot(false);
+    toast.custom((t: any) => (<Toast t={t} type="success" content="Document(s) submitted successfully" />));
+  }
+
 
   return (
     <Layout headerTitle="CHECK-IN HUB" header={
@@ -123,7 +155,7 @@ export default function Index() {
 
               {/* Screenshot Component */}
               {takeScreenshot && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-transparent">
                   <ScreenshotComponent onScreenshotTaken={handleScreenshot} />
                 </div>
               )}
@@ -318,6 +350,66 @@ export default function Index() {
           )}
         </div>
       </div>
+      {isModalOpen && (
+        <Modal title="Captured Document" onClose={closeModal}>
+          {screenshotImage && (
+            <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
+              {/* Image Grid Container */}
+              <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center">
+                {screenshotImage.map((image, index) => (
+                  <div key={index} className="flex justify-center relative">
+                    <Image
+                      width={1000}
+                      height={1000}
+                      src={image}
+                      alt="Captured Document"
+                      className="max-w-full max-h-[80vh] object-contain border-md"
+                    />
+                    <Tooltip tooltip="Delete Image" position="top">
+                      <button
+                        className="absolute top-0 right-0"
+                        onClick={() => handleDeleteImage(index)}
+                      >
+                        <CircleX className="w-5 h-5 text-red-500" />
+                      </button>
+                    </Tooltip>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add Document Button */}
+              <div className="w-full">
+                <button
+                  className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
+                  onClick={handleTakeAnotherImage}
+                >
+                  Add Document
+                </button>
+              </div>
+
+              {/* Booking ID Input */}
+              <div className="w-full">
+                <input
+                  type="text"
+                  placeholder="Booking ID"
+                  className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="w-full">
+                <button
+                  className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold"
+                  onClick={handleDocumentSubmit}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          )}
+        </Modal>
+
+      )}
     </Layout>
   );
 }

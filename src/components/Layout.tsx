@@ -3,6 +3,7 @@ import Dropdown from "./ui/DropDown";
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import Tooltip from "./ui/ToolTip";
+import { useRouter } from "next/router";
 
 
 
@@ -16,6 +17,7 @@ export default function Index({
   children: React.ReactNode;
 }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const router = useRouter();
 
 
   const dropdownItems = [
@@ -39,6 +41,9 @@ export default function Index({
   const handleSelect = (id: string) => {
     if (id === 'toggleTheme') {
       toggleTheme();
+    }
+    if (id === 'logout') {
+      router.push('/login');
     }
   };
 

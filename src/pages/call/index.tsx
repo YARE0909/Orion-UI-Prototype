@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, Disc2, FilePlus2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
+import { CircleX, Disc2, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Send, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -72,7 +72,7 @@ export default function Index() {
   const [micMuted, setMicMuted] = useState(false);
   const [cameraOff, setCameraOff] = useState(false);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
-  const [screenshotImage, setScreenshotImage] = useState<string[] | null>(null);
+  const [screenshotImage, setScreenshotImage] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleFilterChange = (status: string) => {
@@ -94,7 +94,7 @@ export default function Index() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setScreenshotImage(null);
+    setScreenshotImage([]);
     setIsModalOpen(false);
     setTakeScreenshot(false);
   };
@@ -110,11 +110,23 @@ export default function Index() {
   };
 
   const handleDocumentSubmit = () => {
+    if (screenshotImage!.length === 0) {
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="No document(s) captured" />));
+    }
     // Reset all states
-    setScreenshotImage(null);
+    setScreenshotImage([]);
     setIsModalOpen(false);
     setTakeScreenshot(false);
     toast.custom((t: any) => (<Toast t={t} type="success" content="Document(s) submitted successfully" />));
+  }
+
+  const cancelScreenshot = () => {
+    if (screenshotImage!.length > 0) {
+      setTakeScreenshot(false);
+      setIsModalOpen(true);
+    } else {
+      setTakeScreenshot(false);
+    }
   }
 
 
@@ -155,16 +167,22 @@ export default function Index() {
               {/* Screenshot Component */}
               {takeScreenshot && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-transparent">
-                  <ScreenshotComponent onScreenshotTaken={handleScreenshot} />
+                  <ScreenshotComponent onScreenshotTaken={handleScreenshot} cancelScreenshot={cancelScreenshot} />
                 </div>
               )}
               {/* Toolbar */}
               <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
-                <div className="w-full flex space-x-2">
+                <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
                   <Tooltip tooltip="Capture Document">
                     <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
                       onClick={() => { setTakeScreenshot(true) }}>
                       <Disc2 className="w-6 h-6" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip tooltip="View Document(s)">
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
+                      onClick={() => { setTakeScreenshot(true) }}>
+                      <FileSearch className="w-6 h-6" />
                     </button>
                   </Tooltip>
                 </div>
@@ -184,7 +202,7 @@ export default function Index() {
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="Hold Call">
-                    <button className="w-fit rounded-md bg-indigo-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-indigo-700 duration-300" onClick={() => setInCall(false)}>
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={() => setInCall(false)}>
                       <Pause className="w-6 h-6" />
                     </button>
                   </Tooltip>
@@ -343,27 +361,34 @@ export default function Index() {
           {screenshotImage && (
             <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
               {/* Image Grid Container */}
-              <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center">
-                {screenshotImage.map((image, index) => (
-                  <div key={index} className="flex justify-center relative">
-                    <Image
-                      width={1000}
-                      height={1000}
-                      src={image}
-                      alt="Captured Document"
-                      className="max-w-full max-h-[80vh] object-contain rounded-md"
-                    />
-                    <Tooltip tooltip="Delete Document" position="top">
-                      <button
-                        className="absolute top-0 right-0"
-                        onClick={() => handleDeleteImage(index)}
-                      >
-                        <CircleX className="w-5 h-5 text-red-500" />
-                      </button>
-                    </Tooltip>
-                  </div>
-                ))}
-              </div>
+              {screenshotImage.length > 0 ? (
+                <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center border-b-2 border-b-border pb-4">
+                  {screenshotImage.map((image, index) => (
+                    <div key={index} className="flex justify-center relative">
+                      <Image
+                        width={1000}
+                        height={1000}
+                        src={image}
+                        alt="Captured Document"
+                        className="max-w-full max-h-[80vh] object-contain rounded-md"
+                      />
+                      <Tooltip tooltip="Delete Document" position="top">
+                        <button
+                          className="absolute top-0 right-0"
+                          onClick={() => handleDeleteImage(index)}
+                        >
+                          <CircleX className="w-5 h-5 text-red-500" />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full h-full flex flex-col space-y-4 justify-center items-center border-b-2 border-b-border pb-4">
+                  <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
+                </div>
+              )
+              }
 
               <div className="w-full">
                 <input
@@ -375,7 +400,7 @@ export default function Index() {
               <div className="w-full flex space-x-2">
                 <div className="w-full">
                   <button
-                    className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold flex items-center justify-center gap-1"
+                    className="w-full p-2 rounded-md bg-highlight text-text font-bold flex items-center justify-center gap-1"
                     onClick={handleTakeAnotherImage}
                   >
                     <FilePlus2 /> Add Document
@@ -383,7 +408,7 @@ export default function Index() {
                 </div>
                 <div className="w-full">
                   <button
-                    className="w-full p-2 rounded-md bg-indigo-500 text-white font-bold flex items-center justify-center gap-1"
+                    className="w-full p-2 rounded-md bg-indigo-500 text-text font-bold flex items-center justify-center gap-1"
                     onClick={handleDocumentSubmit}
                   >
                     <Send />

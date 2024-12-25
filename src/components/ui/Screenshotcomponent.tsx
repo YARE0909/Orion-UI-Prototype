@@ -1,23 +1,38 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
-import { Crop } from "lucide-react";
+import { Crop, X } from "lucide-react";
+import Tooltip from "./ToolTip";
 
 // Props interface to define the onScreenshotTaken function
 interface ScreenshotComponentProps {
   onScreenshotTaken: (image: string) => void;
+  cancelScreenshot: () => void;
 }
 
 const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
   onScreenshotTaken,
+  cancelScreenshot
 }) => {
   const [boxSize, setBoxSize] = useState({ width: 300, height: 200 });
-  const [boxPosition, setBoxPosition] = useState({ top: 50, left: 50 });
+  const [boxPosition, setBoxPosition] = useState({ top: 250, left: 355 });
   const [isResizing, setIsResizing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isCapturing, setIsCapturing] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const containerHeight = containerRef.current.offsetHeight;
+
+      const centerX = (containerWidth - boxSize.width) / 2;
+      const centerY = (containerHeight - boxSize.height) / 2;
+
+      setBoxPosition({ top: centerY, left: centerX });
+    }
+  }, []);
 
   // Handle drag start
   const handleDragStart = (e: React.MouseEvent) => {
@@ -146,26 +161,41 @@ const ScreenshotComponent: React.FC<ScreenshotComponentProps> = ({
         onMouseDown={handleDragStart}
       >
         {!isCapturing && (
-          <div
-            className="absolute bottom-0 right-0 w-2 h-2 bg-transparent cursor-se-resize rounded-sm"
-            onMouseDown={handleResizeStart}
-          />
+          <>
+            <div
+              className="absolute bottom-0 right-0 w-2 h-2 bg-transparent cursor-se-resize rounded-sm"
+              onMouseDown={handleResizeStart}
+            />
+          </>
         )}
       </div>
 
       {/* Capture button */}
-      <button
-        className="absolute w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
+      <div
+        className="absolute w-fit flex gap-2 bg-transparent p-2 rounded-md"
         style={{
-          top: `${boxPosition.top + boxSize.height + 10}px`, // Positioned 10px below the capture area
+          top: `${boxPosition.top + boxSize.height}px`, // Positioned 10px below the capture area
           left: `${boxPosition.left + boxSize.width / 2}px`, // Centered relative to the capture area
           transform: "translateX(-50%)", // Center alignment
         }}
-        onClick={takeScreenshot}
       >
-        <Crop />
-        <h1>Capture</h1>
-      </button>
+        <Tooltip tooltip="Capture" position="bottom">
+          <button
+            className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
+            onClick={takeScreenshot}
+          >
+            <Crop />
+          </button>
+        </Tooltip>
+        <Tooltip tooltip="Cancel" position="bottom">
+          <button
+            className="w-fit rounded-md bg-red-500 hover:bg-red-700 px-4 py-2 flex items-center justify-center space-x-1"
+            onClick={cancelScreenshot}
+          >
+            <X />
+          </button>
+        </Tooltip>
+      </div>
     </div>
   );
 };

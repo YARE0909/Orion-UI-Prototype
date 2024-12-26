@@ -1,69 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, FilePlus2, FileSearch, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Play, Search, Send, VideoOff } from "lucide-react";
+import { CircleX, FilePlus2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
-import Modal from "@/components/ui/Modal";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import Toast from "@/components/ui/Toast";
+import CallingCard from "./_components/CallingCard";
 
-function CallingCard({ title, status, setInCall }: { title: string, status: string, setInCall: any }) {
-  return (
-    <div className="w-full h-full bg-foreground rounded-lg p-4 flex flex-col space-y-2 justify-between">
-      <div className="w-full flex flex-col gap-2 justify-between pb-1">
-        <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
-          <div>
-            {
-              status === "incoming" && (
-                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-orange-500/30 text-orange-500 px-2">
-                  INCOMING CALL
-                </h1>
-              )
-            }
-            {
-              status === "active" && (
-                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-green-500/30 text-green-500 px-2">
-                  ACTIVE
-                </h1>
-              )
-            }
-            {
-              status === "hold" && (
-                <h1 className="w-fit text-[0.65rem] font-bold rounded bg-indigo-500/30 text-indigo-500 px-2">
-                  ON HOLD
-                </h1>
-              )
-            }
-          </div>
-          <div>
-            <h1 className="w-fit text-[0.65rem] font-bold rounded bg-highlight text-text px-2">00:00</h1>
-          </div>
-        </div>
-        <div className="h-fit flex justify-between items-start space-x-3">
-          <div>
-            <h1 className="font-bold">{title}</h1>
-          </div>
-          <div>
-            <Tooltip tooltip={
-              status === "incoming" ? "Accept Call" : "Resume Call"
-            } position="bottom">
-              <button className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming" ? "bg-green-500/30 hover:bg-green-500/50 border-2 border-green-500" : "bg-indigo-500/30 hover:bg-indigo-500/50 border-2 border-indigo-500"
-                } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`} onClick={() => setInCall(true)}>
-                {status === "incoming" ?
-                  <Phone className="w-4 h-4" /> :
-                  <Play className="w-4 h-4" />
-                }
-              </button>
-            </Tooltip>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 
 export default function Index() {
   const [inCall, setInCall] = useState(false);
@@ -73,10 +20,7 @@ export default function Index() {
   const [cameraOff, setCameraOff] = useState(false);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [screenshotImage, setScreenshotImage] = useState<string[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isViewDocumentModalOpen, setIsViewDocumentModalOpen] = useState(false);
   const [bookingId, setBookingId] = useState("");
-  const [bookingIdForSearch, setBookingIdForSearch] = useState("");
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -92,20 +36,6 @@ export default function Index() {
       prevImages ? [...prevImages, image] : [image]
     );
     setTakeScreenshot(false);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setScreenshotImage([]);
-    setIsModalOpen(false);
-    setTakeScreenshot(false);
-    setBookingId("");
-  };
-
-  const handleTakeAnotherImage = () => {
-    setIsModalOpen(false);
-    setTakeScreenshot(true);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -113,40 +43,27 @@ export default function Index() {
     setScreenshotImage(updatedImages);
   };
 
-  const handleDocumentSubmit = () => {
+  const cancelScreenshot = () => {
+    if (screenshotImage!.length > 0) {
+      setTakeScreenshot(false);
+    } else {
+      setTakeScreenshot(false);
+    }
+  }
+
+  const handleCallEnd = () => {
     if (screenshotImage!.length === 0) {
       return toast.custom((t: any) => (<Toast t={t} type="warning" content="No document(s) captured" />));
     }
     if (bookingId === "") {
       return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID is required" />));
     }
+
     setScreenshotImage([]);
-    setIsModalOpen(false);
     setTakeScreenshot(false);
     setBookingId("");
+    setInCall(false);
     toast.custom((t: any) => (<Toast t={t} type="success" content="Document(s) submitted successfully" />));
-  }
-
-  const cancelScreenshot = () => {
-    if (screenshotImage!.length > 0) {
-      setTakeScreenshot(false);
-      setIsModalOpen(true);
-    } else {
-      setTakeScreenshot(false);
-    }
-  }
-
-  const handleCloseViewDocumentModal = () => {
-    setIsViewDocumentModalOpen(false);
-  };
-
-  const handleSearchDocuments = () => {
-    if (bookingIdForSearch === "") {
-      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID is required" />));
-    }
-    // TODO: Implement Search Logic Here
-    setBookingIdForSearch("");
-    setIsViewDocumentModalOpen(false);
   }
 
   return (
@@ -198,12 +115,6 @@ export default function Index() {
                       <FilePlus2 className="w-6 h-6" />
                     </button>
                   </Tooltip>
-                  <Tooltip tooltip="View Document(s)">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
-                      onClick={() => { setIsViewDocumentModalOpen(true) }}>
-                      <FileSearch className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
                 </div>
                 <div className="w-full flex space-x-2">
                   <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
@@ -221,12 +132,12 @@ export default function Index() {
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="Hold Call">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={() => setInCall(false)}>
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallEnd}>
                       <Pause className="w-6 h-6" />
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="End Call">
-                    <button className="w-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setInCall(false)}>
+                    <button className="w-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={handleCallEnd}>
                       <PhoneOff className="w-6 h-6" />
                     </button>
                   </Tooltip>
@@ -246,10 +157,10 @@ export default function Index() {
         <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 pl-2'} h-[90.5vh]`}>
           {/* Summary Section */}
           {!isRightPanelCollapsed && (
-            <div className=" h-full flex flex-col space-y-2 overflow-hidden">
+            <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
                 <div
-                  className={`w-full bg-green-500/30 hover:bg-green-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
+                  className={`w-full bg-green-500/30 hover:bg-green-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -263,7 +174,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -277,7 +188,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  className={`w-full bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -291,53 +202,106 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              {/* Grid Section */}
-              <div className="w-full h-full overflow-y-auto pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden">
-                {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
-                {filter === "all" && (
-                  <>
-                    {(() => {
-                      const incomingCalls = MockCardData.filter((card) => card.status === "incoming");
-                      const holdCalls = MockCardData.filter((card) => card.status === "hold");
+              <div className={`w-full ${inCall ? "h-1/2" : "h-full"} overflow-y-auto`}>
+                {/* Grid Section */}
+                <div className={`w-full h-full pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden`}>
+                  {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
+                  {filter === "all" && (
+                    <>
+                      {(() => {
+                        const incomingCalls = MockCardData.filter((card) => card.status === "incoming");
+                        const holdCalls = MockCardData.filter((card) => card.status === "hold");
 
-                      const interleavedCalls: typeof MockCardData = [];
-                      const maxLength = Math.max(incomingCalls.length, holdCalls.length);
+                        const interleavedCalls: typeof MockCardData = [];
+                        const maxLength = Math.max(incomingCalls.length, holdCalls.length);
 
-                      for (let i = 0; i < maxLength; i++) {
-                        if (i < incomingCalls.length) interleavedCalls.push(incomingCalls[i]);
-                        if (i < holdCalls.length) interleavedCalls.push(holdCalls[i]);
-                      }
+                        for (let i = 0; i < maxLength; i++) {
+                          if (i < incomingCalls.length) interleavedCalls.push(incomingCalls[i]);
+                          if (i < holdCalls.length) interleavedCalls.push(holdCalls[i]);
+                        }
 
-                      return interleavedCalls.length > 0 ? (
-                        interleavedCalls.map((card, index) => (
-                          <CallingCard
-                            key={index}
-                            title={card.title}
-                            status={card.status}
-                            setInCall={setInCall}
-                          />
-                        ))
-                      ) : (
-                        <div className="col-span-full w-full rounded-md border-2 border-dashed border-border p-4">
-                          <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
-                        </div>
-                      );
-                    })()}
-                  </>
-                )}
+                        return interleavedCalls.length > 0 ? (
+                          interleavedCalls.map((card, index) => (
+                            <CallingCard
+                              key={index}
+                              title={card.title}
+                              status={card.status}
+                              setInCall={setInCall}
+                            />
+                          ))
+                        ) : (
+                          <div className="col-span-full w-full rounded-md border-2 border-dashed border-border p-4">
+                            <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
+                          </div>
+                        );
+                      })()}
+                    </>
+                  )}
 
-                {filter !== "all" && (
-                  filteredData.length > 0 ? (
-                    filteredData.map((card, index) => (
-                      <CallingCard key={index} title={card.title} status={card.status} setInCall={setInCall} />
-                    ))
-                  ) : (
-                    <div className="w-full rounded-md border-2 border-dashed border-border p-4">
-                      <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
-                    </div>
-                  )
-                )}
+                  {filter !== "all" && (
+                    filteredData.length > 0 ? (
+                      filteredData.map((card, index) => (
+                        <CallingCard key={index} title={card.title} status={card.status} setInCall={setInCall} />
+                      ))
+                    ) : (
+                      <div className="w-full rounded-md border-2 border-dashed border-border p-4">
+                        <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
+              {inCall && (
+                <div className="w-full h-full max-h-[50%] flex flex-col justify-between items-center border-t-2 border-t-border">
+                  <div className="w-full h-full flex flex-col gap-3 overflow-y-auto overflow-x-hidden">
+                    <div className="w-full flex justify-start items-center py-1">
+                      <h1 className="font-bold text-xl">Captured Documents</h1>
+                    </div>
+                    {/* Image Grid Container */}
+                    {screenshotImage.length > 0 ? (
+                      <div className="w-full h-full flex flex-col justify-start items-center">
+                        <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
+                          {screenshotImage.map((image, index) => (
+                            <div key={index} className="flex justify-center relative">
+                              <Image
+                                width={1000}
+                                height={1000}
+                                src={image}
+                                alt="Captured Document"
+                                className="max-w-full max-h-[80vh] object-contain rounded-md"
+                              />
+                              <Tooltip tooltip="Delete Document" position="top">
+                                <button
+                                  className="absolute top-0 right-0"
+                                  onClick={() => handleDeleteImage(index)}
+                                >
+                                  <CircleX className="w-5 h-5 text-red-500" />
+                                </button>
+                              </Tooltip>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-full flex flex-col space-y-4 justify-center items-center pb-2">
+                        <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
+                      </div>
+                    )
+                    }
+                  </div>
+                  <div className="w-full h-fit flex items-center gap-2 border-t-2 border-t-border pt-2">
+                    <div className="w-full">
+                      <input
+                        type="text"
+                        placeholder="Booking ID"
+                        className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                        onChange={(e) => setBookingId(e.target.value)}
+                        value={bookingId}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {isRightPanelCollapsed && (
@@ -375,128 +339,6 @@ export default function Index() {
           )}
         </div>
       </div>
-      {isModalOpen && (
-        <Modal title="Captured Document(s)" onClose={closeModal}>
-          {screenshotImage && (
-            <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
-              {/* Image Grid Container */}
-              {screenshotImage.length > 0 ? (
-                <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center border-b-2 border-b-border pb-4">
-                  {screenshotImage.map((image, index) => (
-                    <div key={index} className="flex justify-center relative">
-                      <Image
-                        width={1000}
-                        height={1000}
-                        src={image}
-                        alt="Captured Document"
-                        className="max-w-full max-h-[80vh] object-contain rounded-md"
-                      />
-                      <Tooltip tooltip="Delete Document" position="top">
-                        <button
-                          className="absolute top-0 right-0"
-                          onClick={() => handleDeleteImage(index)}
-                        >
-                          <CircleX className="w-5 h-5 text-red-500" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="w-full h-full flex flex-col space-y-4 justify-center items-center border-b-2 border-b-border pb-4">
-                  <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
-                </div>
-              )
-              }
-
-              <div className="w-full">
-                <input
-                  type="text"
-                  placeholder="Booking ID"
-                  className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
-                  onChange={(e) => setBookingId(e.target.value)}
-                  value={bookingId}
-                />
-              </div>
-              <div className="w-full flex space-x-2">
-                <div className="w-full">
-                  <button
-                    className="w-full p-2 rounded-md bg-highlight text-text font-bold flex items-center justify-center gap-1"
-                    onClick={handleTakeAnotherImage}
-                  >
-                    <FilePlus2 /> Add Document
-                  </button>
-                </div>
-                <div className="w-full">
-                  <button
-                    className="w-full p-2 rounded-md bg-indigo-500 text-text font-bold flex items-center justify-center gap-1"
-                    onClick={handleDocumentSubmit}
-                  >
-                    <Send />
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </Modal>
-      )}
-      {isViewDocumentModalOpen && (
-        <Modal title="View Document(s)" onClose={handleCloseViewDocumentModal}>
-          {screenshotImage && (
-            <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
-              <div className="w-full flex items-center gap-2">
-                <div className="w-full">
-                  <input
-                    type="text"
-                    placeholder="Booking ID"
-                    className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
-                    onChange={(e) => setBookingIdForSearch(e.target.value)}
-                    value={bookingIdForSearch}
-                  />
-                </div>
-                <div className="w-fit">
-                  <button
-                    className="w-full p-2 rounded-md bg-highlight text-text font-bold flex items-center justify-center gap-1"
-                    onClick={handleSearchDocuments}
-                  >
-                    <Search /> Search
-                  </button>
-                </div>
-              </div>
-              {/* Image Grid Container */}
-              {/* {screenshotImage.length > 0 ? (
-                <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center border-b-2 border-b-border pb-4">
-                  {screenshotImage.map((image, index) => (
-                    <div key={index} className="flex justify-center relative">
-                      <Image
-                        width={1000}
-                        height={1000}
-                        src={image}
-                        alt="Captured Document"
-                        className="max-w-full max-h-[80vh] object-contain rounded-md"
-                      />
-                      <Tooltip tooltip="Delete Document" position="top">
-                        <button
-                          className="absolute top-0 right-0"
-                          onClick={() => handleDeleteImage(index)}
-                        >
-                          <CircleX className="w-5 h-5 text-red-500" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="w-full h-full flex flex-col space-y-4 justify-center items-center border-b-2 border-b-border pb-4">
-                  <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
-                </div>
-              )
-              } */}
-            </div>
-          )}
-        </Modal>
-      )}
     </Layout>
   );
 }

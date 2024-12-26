@@ -285,7 +285,7 @@ export default function Index() {
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="w-fit max-w-full h-fit max-h-36 relative">
                               <button
-                                className="bg-red-500 rounded-md px-1 p-1 absolute top-0 right-0"
+                                className="bg-red-500/60 border-2 border-red-500 rounded-md px-1 p-1 absolute top-0 right-0"
                                 onClick={() => handleDeleteImage(index)}
                               >
                                 <Tooltip tooltip="Delete Document" position="top">

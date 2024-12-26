@@ -32,7 +32,7 @@ export default function WatchCard({ title, src }: { title: string; src?: any }) 
           <div className="flex space-x-2 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <Tooltip tooltip="Call Location" position="bottom">
               <div
-                className="bg-green-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
+                className="bg-green-500/50 border-2 border-green-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
                 onClick={() => router.push("/checkInHub")}
               >
                 <PhoneOutgoing className="w-4 h-4 font-bold text-text" />
@@ -40,7 +40,7 @@ export default function WatchCard({ title, src }: { title: string; src?: any }) 
             </Tooltip>
             <Tooltip tooltip="Remove Location" position="bottom">
               <div
-                className="bg-red-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
+                className="bg-red-500/50 border-2 border-red-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
               >
                 <Minus className="w-4 h-4 font-bold text-text" />
               </div>

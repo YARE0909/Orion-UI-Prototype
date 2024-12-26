@@ -21,6 +21,7 @@ export default function Index() {
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [screenshotImage, setScreenshotImage] = useState<string[]>([]);
   const [bookingId, setBookingId] = useState("");
+  const [callNotes, setCallNotes] = useState("");
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -52,18 +53,19 @@ export default function Index() {
   }
 
   const handleCallEnd = () => {
-    if (screenshotImage!.length === 0) {
-      return toast.custom((t: any) => (<Toast t={t} type="warning" content="No document(s) captured" />));
+    if (bookingId !== "" && screenshotImage!.length === 0) {
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="No Document(s) Captured" />));
     }
-    if (bookingId === "") {
-      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID is required" />));
+
+    if (screenshotImage!.length > 0 && bookingId === "") {
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID Required" />));
     }
 
     setScreenshotImage([]);
     setTakeScreenshot(false);
     setBookingId("");
+    setCallNotes("");
     setInCall(false);
-    toast.custom((t: any) => (<Toast t={t} type="success" content="Document(s) submitted successfully" />));
   }
 
   return (
@@ -165,11 +167,11 @@ export default function Index() {
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-green-500 pr-2">
-                      <Phone className="w-6 h-6 text-green-500" />
+                      <Phone className="w-5 h-5 text-green-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold rounded text-green-500">ALL CALLS</h1>
-                      <h1 className="font-bold text-2xl">12</h1>
+                      <h1 className="w-fit text-xs font-bold text-green-500">ALL CALLS</h1>
+                      <h1 className="font-bold text-xl">12</h1>
                     </div>
                   </div>
                 </div>
@@ -179,11 +181,11 @@ export default function Index() {
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-indigo-500 pr-2">
-                      <Pause className="w-6 h-6 text-indigo-500" />
+                      <Pause className="w-5 h-5 text-indigo-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold rounded text-indigo-500">ON HOLD</h1>
-                      <h1 className="font-bold text-2xl">6</h1>
+                      <h1 className="w-fit text-xs font-bold text-indigo-500">ON HOLD</h1>
+                      <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
                 </div>
@@ -193,11 +195,11 @@ export default function Index() {
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-orange-500 pr-2">
-                      <PhoneIncoming className="w-6 h-6 text-orange-500" />
+                      <PhoneIncoming className="w-5 h-5 text-orange-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold rounded text-orange-500">INCOMING</h1>
-                      <h1 className="font-bold text-2xl">6</h1>
+                      <h1 className="w-fit text-xs font-bold text-orange-500">INCOMING</h1>
+                      <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
                 </div>
@@ -252,7 +254,7 @@ export default function Index() {
                 </div>
               </div>
               {inCall && (
-                <div className="w-full h-full max-h-[50%] flex flex-col justify-between items-center border-t-2 border-t-border">
+                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-border">
                   <div className="w-full h-full flex flex-col gap-3 overflow-y-auto overflow-x-hidden">
                     <div className="w-full flex justify-start items-center py-1">
                       <h1 className="font-bold text-xl">Captured Documents</h1>
@@ -283,13 +285,13 @@ export default function Index() {
                         </div>
                       </div>
                     ) : (
-                      <div className="w-full h-full flex flex-col space-y-4 justify-center items-center pb-2">
+                      <div className="w-full h-full flex flex-col space-y-4 justify-center items-center rounded-md border-2 border-dashed border-border">
                         <h1 className="font-bold text-xl text-textAlt">No Document Captured</h1>
                       </div>
                     )
                     }
                   </div>
-                  <div className="w-full h-fit flex items-center gap-2 border-t-2 border-t-border pt-2">
+                  <div className="w-full h-fit flex flex-col items-center gap-2 border-t-2 border-t-border pt-2">
                     <div className="w-full">
                       <input
                         type="text"
@@ -297,6 +299,15 @@ export default function Index() {
                         className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         onChange={(e) => setBookingId(e.target.value)}
                         value={bookingId}
+                      />
+                    </div>
+                    <div className="w-full">
+                      <input
+                        type="text"
+                        placeholder="Notes (Optional)"
+                        className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                        onChange={(e) => setCallNotes(e.target.value)}
+                        value={callNotes}
                       />
                     </div>
                   </div>

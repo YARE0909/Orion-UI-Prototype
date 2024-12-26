@@ -1,6 +1,6 @@
-import { LogOut, MapPin, Menu, Moon, Settings, Sun, UsersRound } from "lucide-react";
+import { Cctv, FileText, Headset, LayoutDashboard, LogOut, MapPin, Menu, Moon, Settings, Sun, Users } from "lucide-react";
 import Dropdown from "./ui/DropDown";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
 import Tooltip from "./ui/ToolTip";
 import { useRouter } from "next/router";
@@ -12,9 +12,9 @@ export default function Index({
   headerTitle,
   children
 }: {
-  header: React.ReactNode;
-  headerTitle: string;
-  children: React.ReactNode;
+  header?: ReactNode;
+  headerTitle: ReactNode;
+  children: ReactNode;
 }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const router = useRouter();
@@ -26,20 +26,25 @@ export default function Index({
       "name": "Settings",
       "icon": <Settings className="w-5 h-5" />
     },
+    ...(!router.pathname.includes("/admin") ? [{
+      "id": "dashboard",
+      "name": "Dashboard",
+      "icon": <LayoutDashboard className="w-5 h-5" />
+    }] : []),
+    ...(router.pathname !== "/call" ? [{
+      "id": "checkInHub",
+      "name": "Check-In Hub",
+      "icon": <Headset className="w-5 h-5" />
+    }] : []),
+    ...(router.pathname !== "/watchCenter" ? [{
+      "id": "watchCenter",
+      "name": "Watch Center",
+      "icon": <Cctv className="w-5 h-5" />
+    }] : []),
     {
       "id": "toggleTheme",
       "name": theme === 'light' ? "Dark Mode" : "Light Mode",
       "icon": theme === 'light' ? <Moon className="w-5 h-5 text-blue-600" /> : <Sun className="w-5 h-5 text-yellow-300" />
-    },
-    {
-      "id": "manageUsers",
-      "name": "Manage Users",
-      "icon": <UsersRound className="w-5 h-5" />
-    },
-    {
-      "id": "manageLocations",
-      "name": "Manage Locations",
-      "icon": <MapPin className="w-5 h-5" />
     },
     {
       "id": "logout",
@@ -55,11 +60,14 @@ export default function Index({
     if (id === 'settings') {
       return router.push('/settings');
     }
-    if (id === 'manageUsers') {
-      return router.push('/admin/users');
+    if (id === 'dashboard') {
+      return router.push('/admin/dashboard');
     }
-    if (id === 'manageLocations') {
-      return router.push('/admin/locations');
+    if (id === 'watchCenter') {
+      return router.push('/watchCenter');
+    }
+    if (id === 'checkInHub') {
+      return router.push('/call');
     }
     if (id === 'logout') {
       return router.push('/login');
@@ -69,9 +77,49 @@ export default function Index({
   return (
     <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-2">
       <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2">
-        <h1 className="font-bold text-2xl">{headerTitle}</h1>
+        {headerTitle}
         <div className="flex items-center space-x-2 pr-4">
           {header}
+          {router.pathname.includes("/admin") && (
+            <div className="flex items-center gap-2">
+              <div className={
+                `${router.pathname === '/admin/documents' ? 'bg-highlight' : 'hover:bg-highlight'} rounded-md p-1 cursor-pointer`
+              }
+                onClick={() => router.push('/admin/documents')}
+              >
+                <Tooltip tooltip="Documents" position="bottom">
+                  <FileText className="w-5 h-5" />
+                </Tooltip>
+              </div>
+              <div className={
+                `${router.pathname === '/admin/locations' ? 'bg-highlight' : 'hover:bg-highlight'} rounded-md p-1 cursor-pointer`
+              }
+                onClick={() => router.push('/admin/locations')}
+              >
+                <Tooltip tooltip="Locations" position="bottom">
+                  <MapPin className="w-5 h-5" />
+                </Tooltip>
+              </div>
+              <div className={
+                `${router.pathname === '/admin/users' ? 'bg-highlight' : 'hover:bg-highlight'} rounded-md p-1 cursor-pointer`
+              }
+                onClick={() => router.push('/admin/users')}
+              >
+                <Tooltip tooltip="Users" position="bottom">
+                  <Users className="w-5 h-5" />
+                </Tooltip>
+              </div>
+              <div className={
+                `${router.pathname === '/admin/dashboard' ? 'bg-highlight' : 'hover:bg-highlight'} rounded-md p-1 cursor-pointer`
+              }
+                onClick={() => router.push('/admin/dashboard')}
+              >
+                <Tooltip tooltip="Dashboard" position="bottom">
+                  <LayoutDashboard className="w-5 h-5" />
+                </Tooltip>
+              </div>
+            </div>
+          )}
           <div className="border-l-2 border-l-border pl-2">
             <div>
               <Dropdown

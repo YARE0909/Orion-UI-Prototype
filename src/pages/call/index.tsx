@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import MockCardData from "../../../mock/watchListMock.json";
-import { CircleX, FilePlus2, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, VideoOff } from "lucide-react";
+import { FilePlus2, Headset, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Trash, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -54,11 +54,7 @@ export default function Index() {
   }
 
   const handleCallEnd = () => {
-    if (bookingId !== "" && screenshotImage!.length === 0) {
-      return toast.custom((t: any) => (<Toast t={t} type="warning" content="No Document(s) Captured" />));
-    }
-
-    if (screenshotImage!.length > 0 && bookingId === "") {
+    if (bookingId === "") {
       return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID Required" />));
     }
 
@@ -70,7 +66,16 @@ export default function Index() {
   }
 
   return (
-    <Layout headerTitle="CHECK-IN HUB" header={
+    <Layout headerTitle={
+      <div className='flex items-center gap-2'>
+        <div>
+          <Headset />
+        </div>
+        <div>
+          <h1 className='font-bold text-2xl'>CHECK-IN HUB</h1>
+        </div>
+      </div>
+    } header={
       <div>
         {
           !isRightPanelCollapsed ? (
@@ -265,24 +270,31 @@ export default function Index() {
                       <div className="w-full h-full flex flex-col justify-start items-center">
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
                           {screenshotImage.map((image, index) => (
-                            <div key={index} className="flex justify-center relative">
-                              <ImageViewer>
-                                <Image
-                                  width={1000}
-                                  height={1000}
-                                  src={image}
-                                  alt="Captured Document"
-                                  className="max-w-full max-h-[80vh] object-contain rounded-md"
-                                />
-                              </ImageViewer>
-                              <Tooltip tooltip="Delete Document" position="top">
+                            <div key={index} className="w-full h-36 flex flex-col gap-2 justify-center items-center relative bg-foreground rounded-md px-1">
+                              <div className="w-full pt-2 flex justify-between items-center border-b-2 border-b-border pb-1">
+                                <div>
+                                  <h1 className="font-bold text-xs text-textAlt">Document {index + 1}</h1>
+                                </div>
                                 <button
-                                  className="absolute top-0 right-0"
+                                  className=""
                                   onClick={() => handleDeleteImage(index)}
                                 >
-                                  <CircleX className="w-5 h-5 text-red-500" />
+                                  <Tooltip tooltip="Delete Document" position="top">
+                                    <Trash className="w-4 h-4 text-red-500" />
+                                  </Tooltip>
                                 </button>
-                              </Tooltip>
+                              </div>
+                              <div className="w-full h-full flex items-center justify-center object-contain">
+                                <ImageViewer src={image}>
+                                  <Image
+                                    width={1000}
+                                    height={1000}
+                                    src={image}
+                                    alt="Captured Document"
+                                    className="max-h-24 object-contain rounded-md"
+                                  />
+                                </ImageViewer>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -299,7 +311,7 @@ export default function Index() {
                       <input
                         type="text"
                         placeholder="Booking ID"
-                        className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                        className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         onChange={(e) => setBookingId(e.target.value)}
                         value={bookingId}
                       />
@@ -308,7 +320,7 @@ export default function Index() {
                       <input
                         type="text"
                         placeholder="Notes (Optional)"
-                        className="w-full p-2 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                        className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         onChange={(e) => setCallNotes(e.target.value)}
                         value={callNotes}
                       />

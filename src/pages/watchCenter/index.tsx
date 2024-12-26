@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import MockCardData from "../../../mock/watchListMock.json";
-import { MapPinPlus } from "lucide-react";
+import { Cctv, MapPinPlus } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import WatchCard from "./_components";
@@ -12,7 +12,16 @@ export default function Index() {
   };
 
   return (
-    <Layout headerTitle="WATCH CENTER" header={
+    <Layout headerTitle={
+      <div className='flex items-center gap-2'>
+        <div>
+          <Cctv />
+        </div>
+        <div>
+          <h1 className='font-bold text-2xl'>WATCH CENTER</h1>
+        </div>
+      </div>
+    } header={
       <div>
         <Tooltip tooltip="Add Location" position="bottom">
           <div>

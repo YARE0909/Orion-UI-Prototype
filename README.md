@@ -21,6 +21,10 @@ The Orion UI Demo provides an interface for different user roles—Guest, Host, 
 
 - A universal login page accessible by all users (admin, host, guest).
 
+### /settings (Common Route):
+
+- Users can manage their personal settings such as updating passwords, notification preferences, and profile details.
+
 ### /watchCenter (Host Route):
 
 - Hosts can view live video feeds from selected locations.
@@ -41,5 +45,4 @@ The Orion UI Demo provides an interface for different user roles—Guest, Host, 
 - **/admin/dashboard**: Analytical dashboard for admins to monitor data.
 - **/admin/users**: User management page for admins to control access and roles.
 - **/admin/locations**: Location management page for configuring guest screens (UI and features to be implemented).
-
----
+- **/admin/documents**: Page where all documents captured during calls can be managed. Admins can search, view, and organize documents associated with specific bookings or users.

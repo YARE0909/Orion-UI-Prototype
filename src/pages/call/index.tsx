@@ -170,7 +170,7 @@ export default function Index() {
                       <Phone className="w-5 h-5 text-green-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold text-green-500">ALL CALLS</h1>
+                      <h1 className="w-fit text-[10px] font-bold text-green-500">ALL CALLS</h1>
                       <h1 className="font-bold text-xl">12</h1>
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export default function Index() {
                       <Pause className="w-5 h-5 text-indigo-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold text-indigo-500">ON HOLD</h1>
+                      <h1 className="w-fit text-[10px] font-bold text-indigo-500">ON HOLD</h1>
                       <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
@@ -198,7 +198,7 @@ export default function Index() {
                       <PhoneIncoming className="w-5 h-5 text-orange-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-xs font-bold text-orange-500">INCOMING</h1>
+                      <h1 className="w-fit text-[10px] font-bold text-orange-500">INCOMING</h1>
                       <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>

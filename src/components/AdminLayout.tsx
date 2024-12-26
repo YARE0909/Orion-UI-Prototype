@@ -10,6 +10,8 @@ import {
   Moon,
   Sun,
   MapPin,
+  Cctv,
+  Headset,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -44,6 +46,21 @@ const sideBarLinks = [
         name: "MANAGE LOCATIONS",
         icon: <MapPin className="w-5 h-5" />,
         href: "/admin/locations",
+      },
+    ],
+  },
+  {
+    category: "OPERATIONS",
+    links: [
+      {
+        name: "CHECK-IN HUB",
+        icon: <Headset className="w-5 h-5" />,
+        href: "/call",
+      },
+      {
+        name: "WATCH CENTER",
+        icon: <Cctv className="w-5 h-5" />,
+        href: "/watchCenter",
       },
     ],
   }

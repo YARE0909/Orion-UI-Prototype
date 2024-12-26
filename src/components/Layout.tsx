@@ -1,4 +1,4 @@
-import { LogOut, Menu, Moon, Settings, Sun } from "lucide-react";
+import { LogOut, MapPin, Menu, Moon, Settings, Sun, UsersRound } from "lucide-react";
 import Dropdown from "./ui/DropDown";
 import { useContext } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
@@ -32,6 +32,16 @@ export default function Index({
       "icon": theme === 'light' ? <Moon className="w-5 h-5 text-blue-600" /> : <Sun className="w-5 h-5 text-yellow-300" />
     },
     {
+      "id": "manageUsers",
+      "name": "Manage Users",
+      "icon": <UsersRound className="w-5 h-5" />
+    },
+    {
+      "id": "manageLocations",
+      "name": "Manage Locations",
+      "icon": <MapPin className="w-5 h-5" />
+    },
+    {
       "id": "logout",
       "name": "Logout",
       "icon": <LogOut className="w-5 h-5 text-red-500" />
@@ -40,10 +50,19 @@ export default function Index({
 
   const handleSelect = (id: string) => {
     if (id === 'toggleTheme') {
-      toggleTheme();
+      return toggleTheme();
+    }
+    if (id === 'settings') {
+      return router.push('/settings');
+    }
+    if (id === 'manageUsers') {
+      return router.push('/admin/users');
+    }
+    if (id === 'manageLocations') {
+      return router.push('/admin/locations');
     }
     if (id === 'logout') {
-      router.push('/login');
+      return router.push('/login');
     }
   };
 

@@ -21,11 +21,11 @@ export default function Index({
 
 
   const dropdownItems = [
-    {
+    ...(router.pathname !== "/settings" ? [{
       "id": "settings",
       "name": "Settings",
       "icon": <Settings className="w-5 h-5" />
-    },
+    }] : []),
     ...(!router.pathname.includes("/admin") ? [{
       "id": "dashboard",
       "name": "Dashboard",

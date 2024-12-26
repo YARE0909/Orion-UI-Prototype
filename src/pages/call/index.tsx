@@ -9,6 +9,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import Toast from "@/components/ui/Toast";
 import CallingCard from "./_components/CallingCard";
+import ImageViewer from "@/components/ui/ImageViewer";
 
 
 
@@ -265,13 +266,15 @@ export default function Index() {
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="flex justify-center relative">
-                              <Image
-                                width={1000}
-                                height={1000}
-                                src={image}
-                                alt="Captured Document"
-                                className="max-w-full max-h-[80vh] object-contain rounded-md"
-                              />
+                              <ImageViewer>
+                                <Image
+                                  width={1000}
+                                  height={1000}
+                                  src={image}
+                                  alt="Captured Document"
+                                  className="max-w-full max-h-[80vh] object-contain rounded-md"
+                                />
+                              </ImageViewer>
                               <Tooltip tooltip="Delete Document" position="top">
                                 <button
                                   className="absolute top-0 right-0"

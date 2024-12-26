@@ -31,7 +31,7 @@ export default function Index({
       "name": "Dashboard",
       "icon": <LayoutDashboard className="w-5 h-5" />
     }] : []),
-    ...(router.pathname !== "/call" ? [{
+    ...(router.pathname !== "/checkInHub" ? [{
       "id": "checkInHub",
       "name": "Check-In Hub",
       "icon": <Headset className="w-5 h-5" />
@@ -67,7 +67,7 @@ export default function Index({
       return router.push('/watchCenter');
     }
     if (id === 'checkInHub') {
-      return router.push('/call');
+      return router.push('/checkInHub');
     }
     if (id === 'logout') {
       return router.push('/login');

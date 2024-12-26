@@ -33,7 +33,7 @@ export default function WatchCard({ title, src }: { title: string; src?: any }) 
             <Tooltip tooltip="Call Location" position="bottom">
               <div
                 className="bg-green-500 duration-300 w-fit h-fit rounded-md py-1 px-3 flex items-center cursor-pointer"
-                onClick={() => router.push("/call")}
+                onClick={() => router.push("/checkInHub")}
               >
                 <PhoneOutgoing className="w-4 h-4 font-bold text-text" />
               </div>

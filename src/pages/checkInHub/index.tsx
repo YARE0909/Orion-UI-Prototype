@@ -271,7 +271,7 @@ export default function Index() {
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="w-full h-36 flex flex-col gap-2 justify-center items-center relative bg-foreground rounded-md px-1">
-                              <div className="w-full pt-2 flex justify-between items-center border-b-2 border-b-border pb-1">
+                              <div className="w-full pt-2 px-1 flex justify-between items-center border-b-2 border-b-border pb-1">
                                 <div>
                                   <h1 className="font-bold text-xs text-textAlt">Document {index + 1}</h1>
                                 </div>

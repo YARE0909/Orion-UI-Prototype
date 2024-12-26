@@ -37,7 +37,6 @@ export default function Index() {
     setScreenshotImage((prevImages) =>
       prevImages ? [...prevImages, image] : [image]
     );
-    setTakeScreenshot(false);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -55,6 +54,7 @@ export default function Index() {
 
   const handleCallEnd = () => {
     if (bookingId === "") {
+      document.getElementById("bookingId")?.focus();
       return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID Required" />));
     }
 
@@ -63,6 +63,17 @@ export default function Index() {
     setBookingId("");
     setCallNotes("");
     setInCall(false);
+    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
+  }
+
+  const handleCallHold = () => {
+    setScreenshotImage([]);
+    setTakeScreenshot(false);
+    setBookingId("");
+    setCallNotes("");
+    setInCall(false);
+
+    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
   }
 
   return (
@@ -140,7 +151,7 @@ export default function Index() {
                     </button>
                   </Tooltip>
                   <Tooltip tooltip="Hold Call">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallEnd}>
+                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallHold}>
                       <Pause className="w-6 h-6" />
                     </button>
                   </Tooltip>
@@ -269,21 +280,18 @@ export default function Index() {
                     {screenshotImage.length > 0 ? (
                       <div className="w-full h-full flex flex-col justify-start items-center">
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
+
+                          {/* Image Thumbnail */}
                           {screenshotImage.map((image, index) => (
-                            <div key={index} className="w-full h-36 flex flex-col gap-2 justify-center items-center relative bg-foreground rounded-md px-1">
-                              <div className="w-full pt-2 px-1 flex justify-between items-center border-b-2 border-b-border pb-1">
-                                <div>
-                                  <h1 className="font-bold text-xs text-textAlt">Document {index + 1}</h1>
-                                </div>
-                                <button
-                                  className=""
-                                  onClick={() => handleDeleteImage(index)}
-                                >
-                                  <Tooltip tooltip="Delete Document" position="top">
-                                    <Trash className="w-4 h-4 text-red-500" />
-                                  </Tooltip>
-                                </button>
-                              </div>
+                            <div key={index} className="w-fit max-w-full h-fit max-h-36 relative">
+                              <button
+                                className="bg-red-500 rounded-md px-1 p-1 absolute top-0 right-0"
+                                onClick={() => handleDeleteImage(index)}
+                              >
+                                <Tooltip tooltip="Delete Document" position="top">
+                                  <Trash className="w-3 h-3 text-text" />
+                                </Tooltip>
+                              </button>
                               <div className="w-full h-full flex items-center justify-center object-contain">
                                 <ImageViewer src={image}>
                                   <Image
@@ -314,6 +322,7 @@ export default function Index() {
                         className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         onChange={(e) => setBookingId(e.target.value)}
                         value={bookingId}
+                        id="bookingId"
                       />
                     </div>
                     <div className="w-full">
@@ -323,6 +332,7 @@ export default function Index() {
                         className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         onChange={(e) => setCallNotes(e.target.value)}
                         value={callNotes}
+                        id="callNotes"
                       />
                     </div>
                   </div>

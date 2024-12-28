@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ImageViewerProps {
   children: React.ReactNode;
@@ -13,6 +13,19 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ children, src }) => {
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div>

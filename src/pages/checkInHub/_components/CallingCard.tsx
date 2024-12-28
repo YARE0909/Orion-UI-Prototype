@@ -31,12 +31,15 @@ export default function CallingCard({
   };
 
   const handleJoinCall = () => {
-    setInCall(true);
-    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Joined" />));
+    setInCall({
+      status: true,
+      callId: title
+    });
+    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }
 
   return (
-    <div className="w-full h-full bg-foreground rounded-lg p-4 flex flex-col space-y-2 justify-between">
+    <div className="w-full h-full bg-foreground rounded-lg p-4 flex flex-col space-y-2 justify-between border-2 border-border">
       <div className="w-full flex flex-col gap-2 justify-between pb-1">
         <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
           <div>
@@ -52,7 +55,7 @@ export default function CallingCard({
             )}
             {status === "hold" && (
               <h1 className="w-fit text-[0.65rem] font-bold rounded bg-indigo-500/30 text-indigo-500 px-2">
-                ON HOLD
+                CALL ON HOLD
               </h1>
             )}
           </div>
@@ -74,8 +77,8 @@ export default function CallingCard({
             >
               <button
                 className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming"
-                  ? "bg-green-500/30 hover:bg-green-500/50 border-2 border-green-500"
-                  : "bg-indigo-500/30 hover:bg-indigo-500/50 border-2 border-indigo-500"
+                  ? "bg-green-500/30 hover:bg-green-500 border-2 border-green-500"
+                  : "bg-indigo-500/30 hover:bg-indigo-500 border-2 border-indigo-500"
                   } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`}
                 onClick={handleJoinCall}
               >

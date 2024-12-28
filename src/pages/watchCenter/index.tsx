@@ -3,7 +3,7 @@ import MockCardData from "../../../mock/watchListMock.json";
 import { Cctv, MapPinPlus } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
-import WatchCard from "./_components";
+import WatchCard from "./_components/WatchCard";
 
 
 export default function Index() {

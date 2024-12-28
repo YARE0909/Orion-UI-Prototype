@@ -10,11 +10,18 @@ import toast from "react-hot-toast";
 import Toast from "@/components/ui/Toast";
 import CallingCard from "./_components/CallingCard";
 import ImageViewer from "@/components/ui/ImageViewer";
+import Chip from "@/components/ui/Chip";
 
 
 
 export default function Index() {
-  const [inCall, setInCall] = useState(false);
+  const [inCall, setInCall] = useState<{
+    status: boolean;
+    callId: string;
+  }>({
+    status: false,
+    callId: ""
+  });
   const [filter, setFilter] = useState("all");
   const [isRightPanelCollapsed, setRightPanelCollapsed] = useState(false);
   const [micMuted, setMicMuted] = useState(false);
@@ -62,7 +69,10 @@ export default function Index() {
     setTakeScreenshot(false);
     setBookingId("");
     setCallNotes("");
-    setInCall(false);
+    setInCall({
+      status: false,
+      callId: ""
+    });
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
   }
 
@@ -71,7 +81,10 @@ export default function Index() {
     setTakeScreenshot(false);
     setBookingId("");
     setCallNotes("");
-    setInCall(false);
+    setInCall({
+      status: false,
+      callId: ""
+    });
 
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
   }
@@ -107,7 +120,7 @@ export default function Index() {
       <div className="w-full h-full flex">
         {/* Left Panel */}
         <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
-          {inCall ? (
+          {inCall.status ? (
             <div className="w-full h-full bg-black rounded-md relative">
               {/* TODO: Implement Video Feed Below */}
               <div className="w-full h-full">
@@ -164,7 +177,7 @@ export default function Index() {
               </div>
             </div>
           ) : (
-            <div className="w-full h-full bg-foreground rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
+            <div className="w-full h-full bg-foreground border-2 border-border rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
               <div>
                 <h1 className="font-bold text-2xl text-textAlt">Not In Call</h1>
               </div>
@@ -187,7 +200,7 @@ export default function Index() {
                       <Phone className="w-5 h-5 text-green-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-[10px] font-bold text-green-500">ALL CALLS</h1>
+                      <h1 className="w-fit text-[0.65rem] font-bold text-green-500">ALL CALLS</h1>
                       <h1 className="font-bold text-xl">12</h1>
                     </div>
                   </div>
@@ -201,7 +214,7 @@ export default function Index() {
                       <Pause className="w-5 h-5 text-indigo-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-[10px] font-bold text-indigo-500">ON HOLD</h1>
+                      <h1 className="w-fit text-[0.65rem] font-bold text-indigo-500">ON HOLD</h1>
                       <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
@@ -215,13 +228,13 @@ export default function Index() {
                       <PhoneIncoming className="w-5 h-5 text-orange-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-[10px] font-bold text-orange-500">INCOMING</h1>
+                      <h1 className="w-fit text-[0.65rem] font-bold text-orange-500">INCOMING</h1>
                       <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className={`w-full ${inCall ? "h-1/2" : "h-full"} overflow-y-auto`}>
+              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto`}>
                 {/* Grid Section */}
                 <div className={`w-full h-full pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden`}>
                   {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
@@ -270,11 +283,24 @@ export default function Index() {
                   )}
                 </div>
               </div>
-              {inCall && (
+              {inCall.status && (
                 <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-border">
                   <div className="w-full h-full flex flex-col gap-3 overflow-y-auto overflow-x-hidden">
-                    <div className="w-full flex justify-start items-center py-1">
-                      <h1 className="font-bold text-xl">Captured Documents</h1>
+                    <div className="w-full flex justify-between items-center py-2">
+                      <div className="flex flex-col">
+                        <Chip text="CALL IN PROGRESS" className="bg-green-500/30 border-green-500 text-green-500 px-2" />
+                        <h1 className="font-bold text-lg">{inCall.callId}</h1>
+                      </div>
+                      <div className="w-fit">
+                        <input
+                          type="text"
+                          placeholder="Booking ID"
+                          className="w-full px-2 py-1 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                          onChange={(e) => setBookingId(e.target.value)}
+                          value={bookingId}
+                          id="bookingId"
+                        />
+                      </div>
                     </div>
                     {/* Image Grid Container */}
                     {screenshotImage.length > 0 ? (
@@ -285,7 +311,7 @@ export default function Index() {
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="w-fit max-w-full h-fit max-h-36 relative">
                               <button
-                                className="bg-red-500/60 border-2 border-red-500 rounded-md px-1 p-1 absolute top-0 right-0"
+                                className="bg-red-500/60 border-2 border-red-500 hover:bg-red-700 duration-300 rounded-md px-1 p-1 absolute top-0 right-0"
                                 onClick={() => handleDeleteImage(index)}
                               >
                                 <Tooltip tooltip="Delete Document" position="top">
@@ -316,20 +342,13 @@ export default function Index() {
                   </div>
                   <div className="w-full h-fit flex flex-col items-center gap-2 border-t-2 border-t-border pt-2">
                     <div className="w-full">
-                      <input
-                        type="text"
-                        placeholder="Booking ID"
-                        className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
-                        onChange={(e) => setBookingId(e.target.value)}
-                        value={bookingId}
-                        id="bookingId"
-                      />
-                    </div>
-                    <div className="w-full">
-                      <input
-                        type="text"
+                      <textarea
                         placeholder="Notes (Optional)"
                         className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
+                        style={{
+                          height: "7rem",
+                          resize: "none"
+                        }}
                         onChange={(e) => setCallNotes(e.target.value)}
                         value={callNotes}
                         id="callNotes"

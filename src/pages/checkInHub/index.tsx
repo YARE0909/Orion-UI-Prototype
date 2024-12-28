@@ -11,6 +11,7 @@ import Toast from "@/components/ui/Toast";
 import CallingCard from "./_components/CallingCard";
 import ImageViewer from "@/components/ui/ImageViewer";
 import Chip from "@/components/ui/Chip";
+import Modal from "@/components/ui/Modal";
 
 
 
@@ -30,6 +31,13 @@ export default function Index() {
   const [screenshotImage, setScreenshotImage] = useState<string[]>([]);
   const [bookingId, setBookingId] = useState("");
   const [callNotes, setCallNotes] = useState("");
+  const [confirmEndCall, setConfirmEndCall] = useState<{
+    status: boolean;
+    callId: string;
+  }>({
+    status: false,
+    callId: ""
+  });
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -87,6 +95,27 @@ export default function Index() {
     });
 
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
+  }
+
+  const handleConfirmEndCall = (callId: string) => {
+    if (bookingId === "") {
+      document.getElementById("bookingId")?.focus();
+      return toast.custom((t: any) => (<Toast t={t} type="warning" content="Booking ID Required" />));
+    }
+
+    setScreenshotImage([]);
+    setTakeScreenshot(false);
+    setBookingId("");
+    setCallNotes("");
+    setConfirmEndCall({
+      status: false,
+      callId: ""
+    });
+    setInCall({
+      status: true,
+      callId
+    });
+    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
   }
 
   return (
@@ -258,7 +287,9 @@ export default function Index() {
                               key={index}
                               title={card.title}
                               status={card.status}
+                              inCall={inCall}
                               setInCall={setInCall}
+                              setConfirmEndCall={setConfirmEndCall}
                             />
                           ))
                         ) : (
@@ -273,7 +304,14 @@ export default function Index() {
                   {filter !== "all" && (
                     filteredData.length > 0 ? (
                       filteredData.map((card, index) => (
-                        <CallingCard key={index} title={card.title} status={card.status} setInCall={setInCall} />
+                        <CallingCard
+                          key={index}
+                          title={card.title}
+                          status={card.status}
+                          inCall={inCall}
+                          setInCall={setInCall}
+                          setConfirmEndCall={setConfirmEndCall}
+                        />
                       ))
                     ) : (
                       <div className="w-full rounded-md border-2 border-dashed border-border p-4">
@@ -392,6 +430,35 @@ export default function Index() {
               </div>
             </div>
           )}
+          {
+            confirmEndCall.status && (
+              <Modal title="You Are Still In A Call" onClose={() => setConfirmEndCall({
+                status: false,
+                callId: ""
+              })}>
+                <div className="w-full h-full flex flex-col gap-4 justify-center">
+                  <div>
+                    <h1 className="font-semibold text-xl">You need to end the current call to attend another</h1>
+                  </div>
+                  <div>
+                    <h1 className="font-medium">Would you like to end this call and move to the next?</h1>
+                  </div>
+                  <div className="w-full flex justify-between gap-2 border-t-2 border-t-border pt-4">
+                    <button className="w-full h-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => setConfirmEndCall({
+                      status: false,
+                      callId: ""
+                    })}>
+                      <h1>Cancel</h1>
+                    </button>
+                    <button className="w-full h-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={() => handleConfirmEndCall(confirmEndCall.callId)}>
+                      <PhoneOff className="w-6 h-6" />
+                      <h1>End Call</h1>
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+            )
+          }
         </div>
       </div>
     </Layout>

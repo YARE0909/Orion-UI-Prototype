@@ -8,11 +8,18 @@ import Toast from "@/components/ui/Toast";
 export default function CallingCard({
   title,
   status,
+  inCall,
   setInCall,
+  setConfirmEndCall
 }: {
   title: string;
   status: string;
+  inCall: {
+    status: boolean;
+    callId: string
+  };
   setInCall: any;
+  setConfirmEndCall: any;
 }) {
   const [elapsedTime, setElapsedTime] = useState(0); // Time in seconds
 
@@ -31,6 +38,13 @@ export default function CallingCard({
   };
 
   const handleJoinCall = () => {
+    if (inCall.status) {
+      return setConfirmEndCall({
+        status: true,
+        callId: title
+      });
+    }
+
     setInCall({
       status: true,
       callId: title

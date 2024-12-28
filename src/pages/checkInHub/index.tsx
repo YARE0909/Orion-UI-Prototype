@@ -361,20 +361,20 @@ export default function Index() {
                     </div>
                     {/* Call Controls */}
                     <div className="w-full h-fit rounded-md flex space-x-2 items-center p-1">
-                      <button className="w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"
+                      <button className="w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-500 duration-300"
                         onClick={() => { setTakeScreenshot(true) }}>
                         <Tooltip tooltip="Add Document">
                           <FilePlus2 className="w-6 h-6" />
                         </Tooltip>
                       </button>
-                      <button className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"} onClick={() => {
+                      <button className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-500 duration-300"} onClick={() => {
                         setMicMuted(!micMuted)
                       }}>
                         <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
                         </Tooltip>
                       </button>
-                      <button className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"} onClick={() => {
+                      <button className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-500 duration-300"} onClick={() => {
                         setCameraOff(!cameraOff)
                       }}>
                         <Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>

@@ -151,7 +151,7 @@ export default function Index() {
         {/* Left Panel */}
         <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
           {inCall.status ? (
-            <div className="w-full h-full bg-black rounded-md relative">
+            <div className="w-full h-full bg-black rounded-md relative z-0">
               {/* TODO: Implement Video Feed Below */}
               <div className="w-full h-full">
                 <video
@@ -169,42 +169,7 @@ export default function Index() {
                 </div>
               )}
               {/* Toolbar */}
-              <div className="w-fit h-16 bg-foreground absolute bottom-4 rounded-md left-1/2 transform -translate-x-1/2 flex space-x-2 items-center p-4">
-                <div className="w-full flex space-x-2 border-r-2 border-r-border pr-2">
-                  <Tooltip tooltip="Capture Document(s)">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1"
-                      onClick={() => { setTakeScreenshot(true) }}>
-                      <FilePlus2 className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
-                </div>
-                <div className="w-full flex space-x-2">
-                  <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
-                    <button className={micMuted ? "bg-orange-500 hover:bg-orange-700 duration-300 w-fit rounded-md bg-foreground px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
-                      setMicMuted(!micMuted)
-                    }}>
-                      <MicOff className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
-                    <button className={cameraOff ? "bg-orange-500 hover:bg-orange-700 duration-300 w-fit rounded-md bg-foreground px-4 py-2 flex items-center justify-center space-x-1" : "w-fit rounded-md bg-highlight px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-700 duration-300"} onClick={() => {
-                      setCameraOff(!cameraOff)
-                    }}>
-                      <VideoOff className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip tooltip="Hold Call">
-                    <button className="w-fit rounded-md bg-highlight hover:bg-zinc-300 dark:hover:bg-zinc-700 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallHold}>
-                      <Pause className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip tooltip="End Call">
-                    <button className="w-fit rounded-md bg-red-500 hover:bg-red-700 duration-300 px-4 py-2 flex items-center justify-center space-x-1" onClick={handleCallEnd}>
-                      <PhoneOff className="w-6 h-6" />
-                    </button>
-                  </Tooltip>
-                </div>
-              </div>
+
             </div>
           ) : (
             <div className="w-full h-full bg-foreground border-2 border-border rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
@@ -222,15 +187,15 @@ export default function Index() {
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
                 <div
-                  className={`w-full bg-green-500/30 hover:bg-green-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-green-500" : "border-transparent"}`}
+                  className={`w-full bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
-                    <div className="border-r-2 border-r-green-500 pr-2">
-                      <Phone className="w-5 h-5 text-green-500" />
+                    <div className="border-r-2 border-r-sky-500 pr-2">
+                      <Phone className="w-5 h-5 text-sky-500" />
                     </div>
                     <div>
-                      <h1 className="w-fit text-[0.65rem] font-bold text-green-500">ALL CALLS</h1>
+                      <h1 className="w-fit text-[0.65rem] font-bold text-sky-500">ALL CALLS</h1>
                       <h1 className="font-bold text-xl">12</h1>
                     </div>
                   </div>
@@ -323,9 +288,9 @@ export default function Index() {
                 </div>
               </div>
               {inCall.status && (
-                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-border">
-                  <div className="w-full h-full flex flex-col gap-3 overflow-y-auto overflow-x-hidden">
-                    <div className="w-full flex justify-between items-center py-2">
+                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-border relative z-50">
+                  <div className="w-full h-full flex flex-col overflow-y-auto overflow-x-hidden">
+                    <div className="w-full flex justify-between items-center py-2 sticky top-0 z-50 bg-background">
                       <div className="flex flex-col">
                         <Chip text="CALL IN PROGRESS" className="bg-green-500/30 border-green-500 text-green-500 px-2" />
                         <h1 className="font-bold text-lg">{inCall.callId}</h1>
@@ -343,14 +308,14 @@ export default function Index() {
                     </div>
                     {/* Image Grid Container */}
                     {screenshotImage.length > 0 ? (
-                      <div className="w-full h-full flex flex-col justify-start items-center">
+                      <div className="w-full h-full">
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
 
                           {/* Image Thumbnail */}
                           {screenshotImage.map((image, index) => (
-                            <div key={index} className="w-fit max-w-full h-fit max-h-36 relative">
+                            <div key={index} className="w-fit max-w-full h-fit max-h-36 relative z-50">
                               <button
-                                className="bg-red-500/60 border-2 border-red-500 hover:bg-red-700 duration-300 rounded-md px-1 p-1 absolute top-0 right-0"
+                                className="bg-red-500/60 border-2 border-red-500 hover:bg-red-500 duration-300 rounded-md px-1 p-1 absolute top-0 right-0"
                                 onClick={() => handleDeleteImage(index)}
                               >
                                 <Tooltip tooltip="Delete Document" position="top">
@@ -379,19 +344,53 @@ export default function Index() {
                     )
                     }
                   </div>
-                  <div className="w-full h-fit flex flex-col items-center gap-2 border-t-2 border-t-border pt-2">
+                  <div className="w-full h-fit flex flex-col items-center border-t-2 border-t-border pt-2">
+                    {/* Notes */}
                     <div className="w-full">
                       <textarea
                         placeholder="Notes (Optional)"
                         className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold"
                         style={{
-                          height: "7rem",
+                          height: "3.5rem",
                           resize: "none"
                         }}
                         onChange={(e) => setCallNotes(e.target.value)}
                         value={callNotes}
                         id="callNotes"
                       />
+                    </div>
+                    {/* Call Controls */}
+                    <div className="w-full h-fit rounded-md flex space-x-2 items-center p-1">
+                      <button className="w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"
+                        onClick={() => { setTakeScreenshot(true) }}>
+                        <Tooltip tooltip="Capture Document(s)">
+                          <FilePlus2 className="w-6 h-6" />
+                        </Tooltip>
+                      </button>
+                      <button className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"} onClick={() => {
+                        setMicMuted(!micMuted)
+                      }}>
+                        <Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
+                          <MicOff className="w-6 h-6" />
+                        </Tooltip>
+                      </button>
+                      <button className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1" : "w-full rounded-md bg-zinc-300/30 dark:bg-zinc-700/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-300 dark:hover:bg-zinc-500 duration-300"} onClick={() => {
+                        setCameraOff(!cameraOff)
+                      }}>
+                        <Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
+                          <VideoOff className="w-6 h-6" />
+                        </Tooltip>
+                      </button>
+                      <button className="w-full rounded-md bg-indigo-500/30 border-2 border-indigo-500 hover:bg-indigo-500 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallHold}>
+                        <Tooltip tooltip="Hold Call">
+                          <Pause className="w-6 h-6" />
+                        </Tooltip>
+                      </button>
+                      <button className="w-full rounded-md bg-red-500/30 border-2 border-red-500 hover:bg-red-500 px-4 py-2 flex items-center justify-center space-x-1 duration-300" onClick={handleCallEnd}>
+                        <Tooltip tooltip="End Call">
+                          <PhoneOff className="w-6 h-6" />
+                        </Tooltip>
+                      </button>
                     </div>
                   </div>
                 </div>

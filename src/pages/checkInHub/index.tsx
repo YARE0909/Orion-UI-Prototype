@@ -115,7 +115,8 @@ export default function Index() {
       status: true,
       callId
     });
-    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
+    toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
+    return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }
 
   return (

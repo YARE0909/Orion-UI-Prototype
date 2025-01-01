@@ -197,15 +197,14 @@ export default function Index() {
             </div>
           )}
         </div>
-
         {/* Right Panel */}
         <div className={`transition-all duration-300 ease-in-out ${isRightPanelCollapsed ? 'w-20' : 'w-1/3 pl-2'} h-[90.5vh]`}>
           {/* Summary Section */}
           {!isRightPanelCollapsed && (
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
-              <div className="w-full flex space-x-4">
+              <div className="w-full flex space-x-4 p-2 rounded-md border-2 border-border bg-foreground">
                 <div
-                  className={`w-full h-fit bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -219,7 +218,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -233,7 +232,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-amber-500/50 dark:bg-orange-500/30 hover:bg-amber-500/50 dark:hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -247,7 +246,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto border-2 border-border rounded-md p-2`}>
+              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto border-2 border-border rounded-md p-2 bg-foreground dark:bg-background`}>
                 {/* Grid Section */}
                 <div className={`w-full h-full pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden`}>
                   {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
@@ -306,9 +305,9 @@ export default function Index() {
                 </div>
               </div>
               {inCall.status && (
-                <div className="w-full h-full max-h-[50%] flex flex-col space-y-2 justify-between items-center border-2 border-border rounded-md p-2 relative z-50">
+                <div className="w-full h-full max-h-[50%] flex flex-col space-y-2 justify-between items-center border-2 border-border rounded-md p-2 relative z-50 bg-foreground dark:bg-background">
                   <div className="w-full h-full flex flex-col space-y-2 overflow-y-auto overflow-x-hidden">
-                    <div className="w-full flex justify-between items-center pb-1 sticky top-0 z-50 bg-background border-b-2 border-border">
+                    <div className="w-full flex justify-between items-center pb-1 sticky top-0 z-50 border-b-2 border-border">
                       <div className="flex flex-col">
                         <Chip text="CALL IN PROGRESS" className="bg-green-500/30 border-green-500 text-green-500 px-2" />
                         <h1 className="font-bold text-lg">{inCall.callId}</h1>
@@ -328,7 +327,6 @@ export default function Index() {
                     {screenshotImage.length > 0 ? (
                       <div className="w-full h-full">
                         <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 justify-center items-start">
-
                           {/* Image Thumbnail */}
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="w-fit max-w-full h-fit max-h-36 relative z-50">
@@ -381,12 +379,14 @@ export default function Index() {
                         <FilePlus2 className="w-6 h-6" />
                       </Tooltip>} onClick={() => setTakeScreenshot(true)} />
                       <Button
-                        className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : "w-full rounded-md bg-zinc-500/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-500 duration-300 cursor-pointer"}
+                        className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-300 dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
                         </Tooltip>} onClick={() => setMicMuted(!micMuted)} />
                       <Button
-                        className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : "w-full rounded-md bg-zinc-500/30 border-2 border-zinc-500 px-4 py-2 flex items-center justify-center space-x-1 hover:bg-zinc-500 duration-300 cursor-pointer"}
+                        className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-300 dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
                           <VideoOff className="w-6 h-6" />
                         </Tooltip>} onClick={() => setCameraOff(!cameraOff)} />

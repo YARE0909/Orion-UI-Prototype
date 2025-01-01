@@ -75,8 +75,8 @@ export default function Index({
   };
 
   return (
-    <div className="w-full h-screen overflow-hidden flex flex-col p-2 space-y-2">
-      <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2">
+    <div className="w-full h-screen overflow-hidden flex flex-col space-y-2">
+      <div className="w-full border-b-2 border-b-border py-2 flex justify-between items-center px-2 bg-foreground p-2">
         {headerTitle}
         <div className="flex items-center space-x-2 pr-4">
           {header}
@@ -142,7 +142,9 @@ export default function Index({
           </div>
         </div>
       </div>
-      {children}
+      <div className="p-2">
+        {children}
+      </div>
     </div>
   )
 }

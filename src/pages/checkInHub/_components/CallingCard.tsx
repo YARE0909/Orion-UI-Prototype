@@ -53,7 +53,7 @@ export default function CallingCard({
   }
 
   return (
-    <div className="w-full h-full bg-foreground rounded-lg p-4 flex flex-col space-y-2 justify-between border-2 border-border">
+    <div className="w-full h-full bg-foreground rounded-lg px-4 py-2 flex flex-col space-y-2 justify-between border-2 border-border">
       <div className="w-full flex flex-col gap-2 justify-between pb-1">
         <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
           <div>

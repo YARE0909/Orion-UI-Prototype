@@ -149,7 +149,7 @@ export default function Index() {
       </div>}>
       <div className="w-full h-full flex">
         {/* Left Panel */}
-        <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out border-r-2 border-r-border pr-2`}>
+        <div className={`h-[90.5vh] ${isRightPanelCollapsed ? 'w-full pr-0' : 'w-2/3'} transition-all duration-300 ease-in-out`}>
           {inCall.status ? (
             <div className="w-full h-full bg-black rounded-md relative z-0">
               {/* TODO: Implement Video Feed Below */}
@@ -185,51 +185,51 @@ export default function Index() {
           {/* Summary Section */}
           {!isRightPanelCollapsed && (
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
-              <div className="w-full border-b-2 border-b-border pb-2 flex space-x-4">
+              <div className="w-full flex space-x-4">
                 <div
-                  className={`w-full bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-sky-500 pr-2">
                       <Phone className="w-5 h-5 text-sky-500" />
                     </div>
-                    <div>
-                      <h1 className="w-fit text-[0.65rem] font-bold text-sky-500">ALL CALLS</h1>
-                      <h1 className="font-bold text-xl">12</h1>
+                    <div className="flex items-center gap-2">
+                      <h1 className="font-bold text-xl">{MockCardData.filter(call => call.status === "hold" || call.status === "incoming").length}</h1>
+                      <h1 className="w-fit text-[0.65rem] font-bold text-sky-500">CALLS</h1>
                     </div>
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-indigo-500 pr-2">
                       <Pause className="w-5 h-5 text-indigo-500" />
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
+                      <h1 className="font-bold text-xl">{MockCardData.filter(call => call.status === "hold").length}</h1>
                       <h1 className="w-fit text-[0.65rem] font-bold text-indigo-500">ON HOLD</h1>
-                      <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
                 </div>
                 <div
-                  className={`w-full bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
                     <div className="border-r-2 border-r-orange-500 pr-2">
                       <PhoneIncoming className="w-5 h-5 text-orange-500" />
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
+                      <h1 className="font-bold text-xl">{MockCardData.filter(call => call.status === "incoming").length}</h1>
                       <h1 className="w-fit text-[0.65rem] font-bold text-orange-500">INCOMING</h1>
-                      <h1 className="font-bold text-xl">6</h1>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto`}>
+              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto border-2 border-border rounded-md p-2`}>
                 {/* Grid Section */}
                 <div className={`w-full h-full pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden`}>
                   {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
@@ -288,7 +288,7 @@ export default function Index() {
                 </div>
               </div>
               {inCall.status && (
-                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-gray-500 relative z-50">
+                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-2 border-border rounded-md p-2 relative z-50">
                   <div className="w-full h-full flex flex-col overflow-y-auto overflow-x-hidden">
                     <div className="w-full flex justify-between items-center py-2 sticky top-0 z-50 bg-background">
                       <div className="flex flex-col">

@@ -288,7 +288,7 @@ export default function Index() {
                 </div>
               </div>
               {inCall.status && (
-                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-border relative z-50">
+                <div className="w-full h-full max-h-[50%] flex flex-col gap-2 justify-between items-center border-t-2 border-t-gray-500 relative z-50">
                   <div className="w-full h-full flex flex-col overflow-y-auto overflow-x-hidden">
                     <div className="w-full flex justify-between items-center py-2 sticky top-0 z-50 bg-background">
                       <div className="flex flex-col">

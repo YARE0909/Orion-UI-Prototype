@@ -92,8 +92,8 @@ export default function CallingCard({
             >
               <Button
                 className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming"
-                  ? "bg-green-500/50 dark:bg-green-500/30 hover:bg-green-500 border-2 border-green-500"
-                  : "bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500 border-2 border-indigo-500"
+                  ? "bg-green-500/50 dark:bg-green-500/30 hover:bg-green-500 dark:hover:bg-green-500 border-2 border-green-500"
+                  : "bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500 dark:hover:bg-indigo-500 border-2 border-indigo-500"
                   } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`}
                 onClick={handleJoinCall}
                 icon={status === "incoming" ? (

@@ -307,7 +307,7 @@ export default function Index() {
               {inCall.status && (
                 <div className="w-full h-full max-h-[50%] flex flex-col space-y-2 justify-between items-center border-2 border-border rounded-md p-2 relative z-50 bg-foreground dark:bg-background">
                   <div className="w-full h-full flex flex-col space-y-2 overflow-y-auto overflow-x-hidden">
-                    <div className="w-full flex justify-between items-center pb-1 sticky top-0 z-50 border-b-2 border-border">
+                    <div className="w-full flex justify-between items-center pb-1 sticky top-0 z-50">
                       <div className="flex flex-col">
                         <Chip text="CALL IN PROGRESS" className="bg-green-500/30 border-green-500 text-green-500 px-2" />
                         <h1 className="font-bold text-lg">{inCall.callId}</h1>
@@ -358,7 +358,7 @@ export default function Index() {
                     )
                     }
                   </div>
-                  <div className="w-full h-fit flex flex-col items-center border-t-2 border-t-border pt-2">
+                  <div className="w-full h-fit flex flex-col items-center pt-2">
                     {/* Notes */}
                     <div className="w-full">
                       <textarea

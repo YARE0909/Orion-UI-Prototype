@@ -204,7 +204,7 @@ export default function Index() {
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full flex space-x-4 p-2 rounded-md border-2 border-border bg-foreground">
                 <div
-                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-300/70 dark:hover:bg-sky-700 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-300/70 dark:hover:bg-sky-700 duration-300 rounded-md p-2 py-0.5 cursor-pointer border ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -218,7 +218,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-300/70 dark:hover:bg-indigo-800 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-300/70 dark:hover:bg-indigo-800 duration-300 rounded-md p-2 py-0.5 cursor-pointer border ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -232,7 +232,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border ${filter === "incoming" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -307,9 +307,9 @@ export default function Index() {
               {inCall.status && (
                 <div className="w-full h-full max-h-[50%] flex flex-col space-y-2 justify-between items-center border-2 border-border rounded-md p-2 relative z-50 bg-foreground dark:bg-background">
                   <div className="w-full h-full flex flex-col space-y-2 overflow-y-auto overflow-x-hidden">
-                    <div className="w-full flex justify-between items-center pb-1 sticky top-0 z-50">
+                    <div className="w-full flex justify-between items-center sticky top-0 z-50">
                       <div className="flex flex-col">
-                        <Chip text="CALL IN PROGRESS" className="bg-green-500/30 border-green-500 text-green-500 px-2" />
+                        <Chip text="CALL IN PROGRESS" className="border-green-500 text-green-500" />
                         <h1 className="font-bold text-lg">{inCall.callId}</h1>
                       </div>
                       <div className="w-fit">
@@ -331,7 +331,7 @@ export default function Index() {
                           {screenshotImage.map((image, index) => (
                             <div key={index} className="w-fit max-w-full h-fit max-h-36 relative z-50">
                               <Button
-                                className="bg-red-500/60 border-2 border-red-500 hover:bg-red-500 duration-300 rounded-md px-1 p-1 absolute top-0 right-0" color="red" icon={
+                                className="bg-red-500/60 border border-red-500 hover:bg-red-500 duration-300 rounded-md px-1 p-1 absolute top-0 right-0" color="red" icon={
                                   <Tooltip tooltip="Delete Document" position="top">
                                     <Trash className="w-3 h-3 text-text" />
                                   </Tooltip>
@@ -358,7 +358,7 @@ export default function Index() {
                     )
                     }
                   </div>
-                  <div className="w-full h-fit flex flex-col items-center pt-2">
+                  <div className="w-full h-fit flex flex-col items-center">
                     {/* Notes */}
                     <div className="w-full">
                       <textarea
@@ -379,13 +379,13 @@ export default function Index() {
                         <FilePlus2 className="w-6 h-6" />
                       </Tooltip>} onClick={() => setTakeScreenshot(true)} />
                       <Button
-                        className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={micMuted ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
                         </Tooltip>} onClick={() => setMicMuted(!micMuted)} />
                       <Button
-                        className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={cameraOff ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
                           <VideoOff className="w-6 h-6" />

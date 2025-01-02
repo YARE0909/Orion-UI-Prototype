@@ -59,17 +59,17 @@ export default function CallingCard({
         <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
           <div>
             {status === "incoming" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-orange-500/30 text-orange-500 px-2">
+              <h1 className="w-fit text-[0.65rem] font-bold rounded text-orange-500">
                 INCOMING CALL
               </h1>
             )}
             {status === "active" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-green-500/30 text-green-500 px-2">
+              <h1 className="w-fit text-[0.65rem] font-bold rounded text-green-500">
                 ACTIVE
               </h1>
             )}
             {status === "hold" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-indigo-500/30 text-indigo-500 px-2">
+              <h1 className="w-fit text-[0.65rem] font-bold rounded text-indigo-500">
                 CALL ON HOLD
               </h1>
             )}
@@ -92,8 +92,8 @@ export default function CallingCard({
             >
               <Button
                 className={`w-fit h-fit whitespace-nowrap rounded-md ${status === "incoming"
-                  ? "bg-green-500/50 dark:bg-green-500/30 hover:bg-green-500 dark:hover:bg-green-500 border-2 border-green-500"
-                  : "bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500 dark:hover:bg-indigo-500 border-2 border-indigo-500"
+                  ? "bg-green-500/50 dark:bg-green-500/30 hover:bg-green-500 dark:hover:bg-green-500 border border-green-500"
+                  : "bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500 dark:hover:bg-indigo-500 border border-indigo-500"
                   } duration-300 font-bold text-sm justify-center items-center flex px-4 py-1`}
                 onClick={handleJoinCall}
                 icon={status === "incoming" ? (

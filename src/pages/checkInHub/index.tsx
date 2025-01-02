@@ -204,7 +204,7 @@ export default function Index() {
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full flex space-x-4 p-2 rounded-md border-2 border-border bg-foreground">
                 <div
-                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-300/70 dark:hover:bg-sky-700 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -218,7 +218,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-300/70 dark:hover:bg-indigo-800 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "hold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("hold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -232,7 +232,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-amber-500/50 dark:bg-orange-500/30 hover:bg-amber-500/50 dark:hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-[#FFD800] dark:bg-orange-500/30 hover:bg-[#FFD80070] dark:hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -246,7 +246,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto border-2 border-border rounded-md p-2 bg-foreground dark:bg-background`}>
+              <div className={`w-full ${inCall.status ? "h-1/2" : "h-full"} overflow-y-auto border-2 border-border rounded-md p-2 bg-foreground`}>
                 {/* Grid Section */}
                 <div className={`w-full h-full pb-2 grid grid-cols-2 gap-2 auto-rows-min overflow-x-hidden`}>
                   {/* Show Incoming and On Hold Calls in 2 columns when filter is "all" */}
@@ -379,13 +379,13 @@ export default function Index() {
                         <FilePlus2 className="w-6 h-6" />
                       </Tooltip>} onClick={() => setTakeScreenshot(true)} />
                       <Button
-                        className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-300 dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={micMuted ? "bg-[#FFD800] dark:bg-orange-500/30 border-2 border-orange-500 hover:bg-[#FFD80070] dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
                         </Tooltip>} onClick={() => setMicMuted(!micMuted)} />
                       <Button
-                        className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-300 dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={cameraOff ? "bg-[#FFD800] dark:bg-orange-500/30 border-2 border-orange-500 hover:bg-[#FFD80070] dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
                           <VideoOff className="w-6 h-6" />

@@ -42,7 +42,7 @@ const colorClasses = {
     dark: 'dark:bg-white/30 dark:border-white dark:hover:bg-white',
   },
   zinc: {
-    base: 'bg-zinc-400/20 border-zinc-500 hover:bg-zinc-100',
+    base: 'bg-zinc-500/20 border-zinc-500 hover:bg-zinc-500',
     dark: 'dark:bg-zinc-500/30 dark:border-zinc-500 dark:hover:bg-zinc-500',
   },
   // Add more colors as needed

@@ -1,7 +1,7 @@
-import { Cctv, FileText, Headset, LayoutDashboard, LogOut, MapPin, Menu, Moon, Settings, Sun, Users } from "lucide-react";
+import { Cctv, FileText, Headset, LayoutDashboard, LogOut, MapPin, Menu, Settings, Users } from "lucide-react";
 import Dropdown from "./ui/DropDown";
-import { ReactNode, useContext } from "react";
-import { ThemeContext } from "@/context/ThemeContext";
+import { ReactNode } from "react";
+// import { ThemeContext } from "@/context/ThemeContext";
 import Tooltip from "./ui/ToolTip";
 import { useRouter } from "next/router";
 
@@ -16,7 +16,7 @@ export default function Index({
   headerTitle: ReactNode;
   children: ReactNode;
 }) {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  // const { theme, toggleTheme } = useContext(ThemeContext);
   const router = useRouter();
 
 
@@ -41,11 +41,11 @@ export default function Index({
       "name": "Watch Center",
       "icon": <Cctv className="w-5 h-5" />
     }] : []),
-    {
-      "id": "toggleTheme",
-      "name": theme === 'light' ? "Dark Mode" : "Light Mode",
-      "icon": theme === 'light' ? <Moon className="w-5 h-5 text-blue-600" /> : <Sun className="w-5 h-5 text-yellow-300" />
-    },
+    // {
+    //   "id": "toggleTheme",
+    //   "name": theme === 'light' ? "Dark Mode" : "Light Mode",
+    //   "icon": theme === 'light' ? <Moon className="w-5 h-5 text-blue-600" /> : <Sun className="w-5 h-5 text-yellow-300" />
+    // },
     {
       "id": "logout",
       "name": "Logout",
@@ -54,9 +54,9 @@ export default function Index({
   ];
 
   const handleSelect = (id: string) => {
-    if (id === 'toggleTheme') {
-      return toggleTheme();
-    }
+    // if (id === 'toggleTheme') {
+    //   return toggleTheme();
+    // }
     if (id === 'settings') {
       return router.push('/settings');
     }

@@ -59,7 +59,7 @@ export default function CallingCard({
         <div className="w-full flex justify-between space-x-3 border-b-2 border-b-border pb-2">
           <div>
             {status === "incoming" && (
-              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-[#FFD800] dark:bg-orange-500/30 text-orange-500 px-2">
+              <h1 className="w-fit text-[0.65rem] font-bold rounded bg-orange-500/30 text-orange-500 px-2">
                 INCOMING CALL
               </h1>
             )}

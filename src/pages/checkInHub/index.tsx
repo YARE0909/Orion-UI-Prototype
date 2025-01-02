@@ -232,7 +232,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-[#FFD800] dark:bg-orange-500/30 hover:bg-[#FFD80070] dark:hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "incoming" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("incoming")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -379,13 +379,13 @@ export default function Index() {
                         <FilePlus2 className="w-6 h-6" />
                       </Tooltip>} onClick={() => setTakeScreenshot(true)} />
                       <Button
-                        className={micMuted ? "bg-[#FFD800] dark:bg-orange-500/30 border-2 border-orange-500 hover:bg-[#FFD80070] dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={micMuted ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
                         </Tooltip>} onClick={() => setMicMuted(!micMuted)} />
                       <Button
-                        className={cameraOff ? "bg-[#FFD800] dark:bg-orange-500/30 border-2 border-orange-500 hover:bg-[#FFD80070] dark:hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
+                        className={cameraOff ? "bg-orange-500/30 border-2 border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
                           <VideoOff className="w-6 h-6" />

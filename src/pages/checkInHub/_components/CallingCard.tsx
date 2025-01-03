@@ -102,7 +102,7 @@ export default function CallingCard({
         </div>
         <div className="h-fit flex justify-between items-start space-x-3">
           <div>
-            <h1 className="font-bold">{toTitleCase(title)}</h1>
+            <h1 className="font-bold">{toTitleCase(title || "")}</h1>
           </div>
           <div>
             <Tooltip

@@ -1,4 +1,3 @@
-import Button from "@/components/ui/Button";
 import { toTitleCase } from "@/utils/stringFunctions";
 import { LogOut } from "lucide-react";
 import Image from "next/image";

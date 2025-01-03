@@ -16,6 +16,7 @@ import Peer, { MediaConnection } from "peerjs";
 import { io } from "socket.io-client";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
+import { toTitleCase } from "@/utils/stringFunctions";
 
 
 
@@ -463,7 +464,7 @@ export default function Index() {
                     <div className="w-full flex justify-between items-center sticky top-0 z-50">
                       <div className="flex flex-col">
                         <Chip text="CALL IN PROGRESS" className="border-green-500 text-green-500" />
-                        <h1 className="font-bold text-lg">{inCall.callId}</h1>
+                        <h1 className="font-bold text-lg">{toTitleCase(inCall.callId || "")}</h1>
                       </div>
                       <div className="w-fit">
                         <input

@@ -118,7 +118,7 @@ export default function Index() {
     } else if (userToken !== "host") {
       router.push("/guest");
     } else {
-      const peer = new Peer(userId);
+      const peer = new Peer(userToken);
 
       socket.emit("get-call-list");
 

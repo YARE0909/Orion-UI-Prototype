@@ -79,7 +79,7 @@ export default function Index() {
       setUserId(userToken);
       if (userId !== "") {
 
-        const peer = new Peer(userId);
+        const peer = new Peer(userToken);
 
         socket.on("call-joined", (data) => {
           console.log({ currentRoomId });

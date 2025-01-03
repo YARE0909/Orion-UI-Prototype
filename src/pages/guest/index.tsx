@@ -171,7 +171,7 @@ export default function Index() {
           />
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="font-bold text-2xl">Welcome To {toTitleCase(userId)}</h1>
+          <h1 className="font-bold text-[46px]">Welcome To {toTitleCase(userId)}</h1>
         </div>
       </div>
       {!inCall && callStatus === "notInCall" && (
@@ -183,18 +183,20 @@ export default function Index() {
             height={1000}
             className="w-full h-full absolute object-fill"
           />
-          <div className="rounded-lg p-4 flex flex-col justify-center items-center space-y-4 z-50 bg-foreground">
+          <div className="w-80 h-72 rounded-lg p-4 flex flex-col justify-between items-center space-y-4 z-50 bg-zinc-900">
             <div className="w-full flex justify-center">
-              <h1 className="font-bold text-2xl">Meet Your Virtual Receptionist</h1>
+              <h1 className="font-bold text-2xl">Receptionist</h1>
             </div>
-            <Image
-              src="/images/receptionist.png"
-              alt="Receptionist"
-              width={1000}
-              height={1000}
-              className="w-64"
-            />
-            <Button color="indigo" onClick={initiateCall} text="Call Virtual Receptionist" />
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-foreground border border-zinc-600 rounded-md p-2 cursor-pointer" onClick={initiateCall}>
+              <Image
+                src="/images/receptionist.png"
+                alt="Receptionist"
+                width={1000}
+                height={1000}
+                className="w-28"
+              />
+              <h1 className="text-xl font-bold whitespace-nowrap">Meet Virtual Receptionist</h1>
+            </div>
           </div>
         </div>
       )}

@@ -289,10 +289,10 @@ export default function Index() {
           <Headset />
         </div>
         <div>
-          <h1 className='font-bold text-2xl'>CHECK-IN HUB</h1>
+          <h1 className='font-bold'>CHECK-IN HUB</h1>
         </div>
         <div>
-          <h1 className='font-bold text-xl border-l pl-2 border-l-border'>OLIVE HEAD OFFICE</h1>
+          <h1 className='font-bold text-2xl border-l pl-2 border-l-border'>OLIVE HEAD OFFICE</h1>
         </div>
       </div>
     } header={

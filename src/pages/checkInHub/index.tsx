@@ -252,7 +252,12 @@ export default function Index() {
       callId,
       roomId
     });
-    joinCall(roomId);
+    const call = callList.find((call) => call.roomId === roomId);
+    if (call?.status === "pending") {
+      joinCall(roomId)
+    } else {
+      resumeCall(roomId);
+    }
     toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }

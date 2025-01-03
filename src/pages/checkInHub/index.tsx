@@ -225,12 +225,13 @@ export default function Index() {
       callId: "",
       roomId: ""
     });
+    endCall(inCall.roomId);
     setInCall({
       status: true,
       callId,
       roomId
     });
-    endCall(roomId);
+    joinCall(roomId);
     toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }

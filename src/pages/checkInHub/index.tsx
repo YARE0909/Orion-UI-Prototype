@@ -230,11 +230,12 @@ export default function Index() {
       callId,
       roomId
     });
+    endCall(roomId);
     toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }
 
-  const handleConfirmHoldCall = (callId: string) => {
+  const handleConfirmHoldCall = (callId: string, roomId: string) => {
     setScreenshotImage([]);
     setTakeScreenshot(false);
     setBookingId("");
@@ -244,11 +245,13 @@ export default function Index() {
       callId: "",
       roomId: ""
     });
+    holdCall(inCall.roomId);
     setInCall({
       status: true,
       callId,
-      roomId: ""
+      roomId
     });
+    joinCall(roomId);
     toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Commenced" />));
   }
@@ -569,7 +572,7 @@ export default function Index() {
                     <h1 className="font-medium">Would you like to end or place the call on hold?</h1>
                   </div>
                   <div className="w-full flex justify-between gap-2 border-t-2 border-t-border pt-4">
-                    <Button text="Hold Call" color="indigo" icon={<PhoneOff className="w-6 h-6" />} onClick={() => handleConfirmHoldCall(confirmEndCall.callId)} />
+                    <Button text="Hold Call" color="indigo" icon={<PhoneOff className="w-6 h-6" />} onClick={() => handleConfirmHoldCall(confirmEndCall.callId, confirmEndCall.roomId)} />
                     <Button text="End Call" color="red" icon={<PhoneOff className="w-6 h-6" />} onClick={() => handleConfirmEndCall(confirmEndCall.callId, confirmEndCall.roomId)} />
                   </div>
                 </div>

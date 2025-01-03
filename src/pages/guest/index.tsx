@@ -18,16 +18,10 @@ export default function Index() {
   const [currentRoomId, setCurrentRoomId] = useState<string>('');
   const [inCall, setInCall] = useState<boolean>(false);
   const [callStatus, setCallStatus] = useState<string>('notInCall');
+  const socketRef = useRef<ReturnType<typeof io> | null>(null);
+
 
   const router = useRouter();
-
-  const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
-    query: {
-      userId
-    },
-    withCredentials: true,
-
-  });
 
   const call = (remotePeerId: string) => {
     console.log("Calling peer with ID: ", remotePeerId);
@@ -60,14 +54,15 @@ export default function Index() {
     setCurrentRoomId(roomId);
     setInCall(true);
     setCallStatus('calling');
-    socket.emit("initiate-call", JSON.stringify({ roomId }));
+    if (socketRef.current) {
+      socketRef.current.emit("initiate-call", JSON.stringify({ roomId }));
+    }
   };
 
   const handleLogOut = () => {
     destroyCookie(null, "userToken");
     return router.push("/");
   }
-
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -77,90 +72,91 @@ export default function Index() {
       router.push("/");
     } else {
       setUserId(userToken);
-      if (userId !== "") {
+    }
+  }, []);
 
-        const peer = new Peer(userToken);
+  useEffect(() => {
+    if (userId !== "") {
+      const peer = new Peer(userId);
+      peerInstance.current = peer;
 
-        socket.on("call-joined", (data) => {
-          console.log({ currentRoomId });
-          console.log(data.roomId);
-          if (data.roomId === currentRoomId) {
-            console.log(data.to);
-            call(data.to);
-            setCallStatus('inProgress');
+      const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
+        query: {
+          userId,
+        },
+        withCredentials: true,
+      });
+
+      socketRef.current = socket; // Store socket in ref
+
+      socket.on("call-joined", (data) => {
+        if (data.roomId === currentRoomId) {
+          call(data.to);
+          setCallStatus("inProgress");
+        }
+      });
+
+      socket.on("call-on-hold", (data) => {
+        if (data.roomId === currentRoomId) {
+          setCallStatus("onHold");
+        }
+      });
+
+      socket.on("call-resumed", (data) => {
+        if (data.roomId === currentRoomId) {
+          call(data.to);
+          setCallStatus("inProgress");
+        }
+      });
+
+      socket.on("call-ended", (data) => {
+        if (data.roomId === currentRoomId) {
+          if (mediaConnectionRef.current) {
+            mediaConnectionRef.current.close();
+            mediaConnectionRef.current = null;
           }
-        });
-
-        socket.on("call-on-hold", (data) => {
-          if (data.roomId === currentRoomId) {
-            setCallStatus('onHold');
+          if (currentUserVideoRef.current) {
+            currentUserVideoRef.current.srcObject = null;
           }
-        });
+          setInCall(false);
+          setCallStatus("notInCall");
+        }
+      });
 
-        socket.on("call-resumed", (data) => {
-          if (data.roomId === currentRoomId) {
-            console.log({ data });
-            call(data.to);
-            setCallStatus('inProgress');
-          }
-        });
+      peer.on("open", (id: string) => {
+        setPeerId(id);
+      });
 
-        socket.on("call-ended", (data) => {
-          if (data.roomId === currentRoomId) {
-            console.log(data);
-
-            // Close the active PeerJS call when the call-ended event is triggered
-            if (mediaConnectionRef.current) {
-              mediaConnectionRef.current.close();
-              mediaConnectionRef.current = null;
-            }
-            // Close current video streams
+      peer.on("call", (call: MediaConnection) => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((mediaStream: MediaStream) => {
             if (currentUserVideoRef.current) {
-              currentUserVideoRef.current.srcObject = null;
+              currentUserVideoRef.current.srcObject = mediaStream;
+              currentUserVideoRef.current.play();
             }
 
-            setInCall(false);
-            setCallStatus('notInCall');
-          }
-        });
-
-        peer.on('open', (id: string) => {
-          setPeerId(id);
-        });
-
-        peer.on('call', (call: MediaConnection) => {
-          // Use modern getUserMedia method for answering the call
-          navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then((mediaStream: MediaStream) => {
-              if (currentUserVideoRef.current) {
-                currentUserVideoRef.current.srcObject = mediaStream;
-                currentUserVideoRef.current.play();
+            call.answer(mediaStream);
+            call.on("stream", (remoteStream: MediaStream) => {
+              if (remoteVideoRef.current) {
+                remoteVideoRef.current.srcObject = remoteStream;
+                remoteVideoRef.current.play();
               }
-
-              call.answer(mediaStream);
-              call.on('stream', (remoteStream: MediaStream) => {
-                if (remoteVideoRef.current) {
-                  remoteVideoRef.current.srcObject = remoteStream;
-                  remoteVideoRef.current.play();
-                }
-              });
-
-              // Store the incoming call in the ref
-              mediaConnectionRef.current = call;
-            })
-            .catch((err) => {
-              console.error("Error accessing media devices.", err);
             });
-        });
 
-        peerInstance.current = peer;
+            mediaConnectionRef.current = call;
+          })
+          .catch((err) => {
+            console.error("Error accessing media devices.", err);
+          });
+      });
 
-        return () => {
-          peerInstance.current?.destroy();
-        };
-      }
-    };
-  }, [currentRoomId]);
+      return () => {
+        socket.disconnect();
+        peerInstance.current?.destroy();
+      };
+    }
+  }, [userId, currentRoomId]);
+
 
   return (
     <div className="w-full h-screen bg-background flex flex-col text-white">

@@ -1,11 +1,15 @@
 import Button from "@/components/ui/Button";
+import { toTitleCase } from "@/utils/stringFunctions";
+import { LogOut } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { destroyCookie, parseCookies } from "nookies";
 import Peer, { MediaConnection } from "peerjs";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
 export default function Index() {
-  const [userId] = useState<string>(`Guest-${Math.floor(Math.random() * 1000)}`);
+  const [userId, setUserId] = useState<string>("");
   const [, setPeerId] = useState<string>('');
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const currentUserVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -14,6 +18,8 @@ export default function Index() {
   const [currentRoomId, setCurrentRoomId] = useState<string>('');
   const [inCall, setInCall] = useState<boolean>(false);
   const [callStatus, setCallStatus] = useState<string>('notInCall');
+
+  const router = useRouter();
 
   const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
     query: {
@@ -57,85 +63,102 @@ export default function Index() {
     socket.emit("initiate-call", JSON.stringify({ roomId }));
   };
 
+  const handleLogOut = () => {
+    destroyCookie(null, "userToken");
+    return router.push("/");
+  }
+
+
   useEffect(() => {
-    const peer = new Peer(userId);
+    const cookies = parseCookies();
+    const { userToken } = cookies;
 
-    socket.on("call-joined", (data) => {
-      console.log({ currentRoomId });
-      console.log(data.roomId);
-      if (data.roomId === currentRoomId) {
-        console.log(data.to);
-        call(data.to);
-        setCallStatus('inProgress');
-      }
-    });
+    if (!userToken) {
+      router.push("/");
+    } else {
+      setUserId(userToken);
+      if (userId !== "") {
 
-    socket.on("call-on-hold", (data) => {
-      if (data.roomId === currentRoomId) {
-        setCallStatus('onHold');
-      }
-    });
+        const peer = new Peer(userId);
 
-    socket.on("call-resumed", (data) => {
-      if (data.roomId === currentRoomId) {
-        console.log({ data });
-        call(data.to);
-        setCallStatus('inProgress');
-      }
-    });
-
-    socket.on("call-ended", (data) => {
-      if (data.roomId === currentRoomId) {
-        console.log(data);
-
-        // Close the active PeerJS call when the call-ended event is triggered
-        if (mediaConnectionRef.current) {
-          mediaConnectionRef.current.close();
-          mediaConnectionRef.current = null;
-        }
-        // Close current video streams
-        if (currentUserVideoRef.current) {
-          currentUserVideoRef.current.srcObject = null;
-        }
-
-        setInCall(false);
-        setCallStatus('notInCall');
-      }
-    });
-
-    peer.on('open', (id: string) => {
-      setPeerId(id);
-    });
-
-    peer.on('call', (call: MediaConnection) => {
-      // Use modern getUserMedia method for answering the call
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then((mediaStream: MediaStream) => {
-          if (currentUserVideoRef.current) {
-            currentUserVideoRef.current.srcObject = mediaStream;
-            currentUserVideoRef.current.play();
+        socket.on("call-joined", (data) => {
+          console.log({ currentRoomId });
+          console.log(data.roomId);
+          if (data.roomId === currentRoomId) {
+            console.log(data.to);
+            call(data.to);
+            setCallStatus('inProgress');
           }
-
-          call.answer(mediaStream);
-          call.on('stream', (remoteStream: MediaStream) => {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-              remoteVideoRef.current.play();
-            }
-          });
-
-          // Store the incoming call in the ref
-          mediaConnectionRef.current = call;
-        })
-        .catch((err) => {
-          console.error("Error accessing media devices.", err);
         });
-    });
 
-    peerInstance.current = peer;
+        socket.on("call-on-hold", (data) => {
+          if (data.roomId === currentRoomId) {
+            setCallStatus('onHold');
+          }
+        });
 
-    return () => {
-      peerInstance.current?.destroy();
+        socket.on("call-resumed", (data) => {
+          if (data.roomId === currentRoomId) {
+            console.log({ data });
+            call(data.to);
+            setCallStatus('inProgress');
+          }
+        });
+
+        socket.on("call-ended", (data) => {
+          if (data.roomId === currentRoomId) {
+            console.log(data);
+
+            // Close the active PeerJS call when the call-ended event is triggered
+            if (mediaConnectionRef.current) {
+              mediaConnectionRef.current.close();
+              mediaConnectionRef.current = null;
+            }
+            // Close current video streams
+            if (currentUserVideoRef.current) {
+              currentUserVideoRef.current.srcObject = null;
+            }
+
+            setInCall(false);
+            setCallStatus('notInCall');
+          }
+        });
+
+        peer.on('open', (id: string) => {
+          setPeerId(id);
+        });
+
+        peer.on('call', (call: MediaConnection) => {
+          // Use modern getUserMedia method for answering the call
+          navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then((mediaStream: MediaStream) => {
+              if (currentUserVideoRef.current) {
+                currentUserVideoRef.current.srcObject = mediaStream;
+                currentUserVideoRef.current.play();
+              }
+
+              call.answer(mediaStream);
+              call.on('stream', (remoteStream: MediaStream) => {
+                if (remoteVideoRef.current) {
+                  remoteVideoRef.current.srcObject = remoteStream;
+                  remoteVideoRef.current.play();
+                }
+              });
+
+              // Store the incoming call in the ref
+              mediaConnectionRef.current = call;
+            })
+            .catch((err) => {
+              console.error("Error accessing media devices.", err);
+            });
+        });
+
+        peerInstance.current = peer;
+
+        return () => {
+          peerInstance.current?.destroy();
+        };
+      }
     };
   }, [currentRoomId]);
 
@@ -152,11 +175,18 @@ export default function Index() {
           />
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="font-bold text-2xl">Welcome To Olive Indiranagar</h1>
+          <h1 className="font-bold text-2xl">Welcome To {toTitleCase(userId)}</h1>
         </div>
       </div>
       {!inCall && callStatus === "notInCall" && (
         <div className="w-full h-full flex justify-center items-center relative">
+          <Image
+            src="/images/background.png"
+            alt="Logo"
+            width={1000}
+            height={1000}
+            className="w-full h-full absolute object-fill"
+          />
           <div className="rounded-lg p-4 flex flex-col justify-center items-center space-y-4 z-50 bg-foreground">
             <div className="w-full flex justify-center">
               <h1 className="font-bold text-2xl">Meet Your Virtual Receptionist</h1>
@@ -196,6 +226,9 @@ export default function Index() {
           </div>
         )
       }
+      <div className="absolute top-4 right-2 z-50 flex items-center">
+        <LogOut className="cursor-pointer" color="red" onClick={handleLogOut} />
+      </div>
     </div>
   )
 }

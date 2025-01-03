@@ -14,6 +14,8 @@ import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import Peer, { MediaConnection } from "peerjs";
 import { io } from "socket.io-client";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/router";
 
 
 
@@ -57,6 +59,8 @@ export default function Index() {
     to: string | null
   }[]>([]);
   const mediaConnectionRef = useRef<MediaConnection | null>(null);
+
+  const router = useRouter();
 
   const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL, {
     query: {
@@ -104,49 +108,59 @@ export default function Index() {
   }
 
   useEffect(() => {
-    const peer = new Peer(userId);
+    const cookies = parseCookies();
 
-    socket.emit("get-call-list");
+    const { userToken } = cookies;
 
-    socket.on("call-list-update", (data) => {
-      console.log(data);
-      setCallList(data);
-    });
+    if (!userToken) {
+      router.push("/");
+    } else if (userToken !== "host") {
+      router.push("/guest");
+    } else {
+      const peer = new Peer(userId);
 
-    peer.on('open', (id: string) => {
-      setPeerId(id);
-    });
+      socket.emit("get-call-list");
 
-    peer.on('call', (call: MediaConnection) => {
-      // Use modern getUserMedia method for answering the call
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then((mediaStream: MediaStream) => {
-          if (currentUserVideoRef.current) {
-            currentUserVideoRef.current.srcObject = mediaStream;
-            currentUserVideoRef.current.play();
-          }
+      socket.on("call-list-update", (data) => {
+        console.log(data);
+        setCallList(data);
+      });
 
-          call.answer(mediaStream);
-          call.on('stream', (remoteStream: MediaStream) => {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-              remoteVideoRef.current.play();
+      peer.on('open', (id: string) => {
+        setPeerId(id);
+      });
+
+      peer.on('call', (call: MediaConnection) => {
+        // Use modern getUserMedia method for answering the call
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then((mediaStream: MediaStream) => {
+            if (currentUserVideoRef.current) {
+              currentUserVideoRef.current.srcObject = mediaStream;
+              currentUserVideoRef.current.play();
             }
+
+            call.answer(mediaStream);
+            call.on('stream', (remoteStream: MediaStream) => {
+              if (remoteVideoRef.current) {
+                remoteVideoRef.current.srcObject = remoteStream;
+                remoteVideoRef.current.play();
+              }
+            });
+
+            // Save the current call to ref for later closing
+            mediaConnectionRef.current = call;
+          })
+          .catch((err) => {
+            console.error("Error accessing media devices.", err);
           });
+      });
 
-          // Save the current call to ref for later closing
-          mediaConnectionRef.current = call;
-        })
-        .catch((err) => {
-          console.error("Error accessing media devices.", err);
-        });
-    });
+      peerInstance.current = peer;
 
-    peerInstance.current = peer;
-
-    return () => {
-      peerInstance.current?.destroy();
-    };
+      return () => {
+        peerInstance.current?.destroy();
+      };
+    }
   }, []);
 
   const handleFilterChange = (status: string) => {
@@ -275,6 +289,9 @@ export default function Index() {
         </div>
         <div>
           <h1 className='font-bold text-2xl'>CHECK-IN HUB</h1>
+        </div>
+        <div>
+          <h1 className='font-bold text-xl border-l pl-2 border-l-border'>OLIVE HEAD OFFICE</h1>
         </div>
       </div>
     } header={

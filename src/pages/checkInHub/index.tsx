@@ -147,7 +147,7 @@ export default function Index() {
     return () => {
       peerInstance.current?.destroy();
     };
-  }, [userId]);
+  }, []);
 
   const handleFilterChange = (status: string) => {
     setFilter(status);

@@ -137,7 +137,7 @@ export default function Index() {
     return () => {
       peerInstance.current?.destroy();
     };
-  }, [userId, currentRoomId]);
+  }, [currentRoomId]);
 
   return (
     <div className="w-full h-screen bg-background flex flex-col text-white">

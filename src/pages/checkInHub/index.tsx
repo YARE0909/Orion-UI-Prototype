@@ -334,13 +334,11 @@ export default function Index() {
                   <ScreenshotComponent onScreenshotTaken={handleScreenshot} cancelScreenshot={cancelScreenshot} />
                 </div>
               )}
-              {/* Toolbar */}
-
             </div>
           ) : (
             <div className="w-full h-full bg-foreground border-2 border-border rounded-md mb-20 p-4 flex flex-col space-y-4 justify-center items-center">
               <div>
-                <h1 className="font-bold text-2xl text-textAlt">Not In Call</h1>
+                <h1 className="font-bold text-2xl text-textAlt">No Ongoing Call</h1>
               </div>
             </div>
           )}
@@ -428,7 +426,7 @@ export default function Index() {
                           ))
                         ) : (
                           <div className="col-span-full w-full rounded-md border-2 border-dashed border-border p-4">
-                            <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
+                            <h1 className="text-center text-xl text-textAlt font-bold">No Calls In Progress</h1>
                           </div>
                         );
                       })()}
@@ -452,7 +450,7 @@ export default function Index() {
                       ))
                     ) : (
                       <div className="col-span-full w-full rounded-md border-2 border-dashed border-border p-4">
-                        <h1 className="text-center text-xl text-textAlt font-bold">No Calls Available</h1>
+                        <h1 className="text-center text-xl text-textAlt font-bold">No Calls In Progress</h1>
                       </div>
                     )
                   )}

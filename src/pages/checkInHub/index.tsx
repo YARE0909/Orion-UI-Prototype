@@ -371,7 +371,7 @@ export default function Index() {
             <div className="w-full h-full flex flex-col space-y-2 overflow-hidden">
               <div className="w-full flex space-x-4 p-2 rounded-md border-2 border-border bg-foreground">
                 <div
-                  className={`w-full h-fit bg-sky-500/50 dark:bg-sky-500/30 hover:bg-sky-300/70 dark:hover:bg-sky-700 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-sky-500/30 hover:bg-sky-700/40 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "all" ? "border-sky-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("all")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -385,7 +385,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-indigo-500/50 dark:bg-indigo-500/30 hover:bg-indigo-300/70 dark:hover:bg-indigo-800 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "onHold" ? "border-indigo-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-indigo-500/30 hover:bg-indigo-700/40 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "onHold" ? "border-indigo-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("onHold")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -399,7 +399,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div
-                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-500/50 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "pending" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
+                  className={`w-full h-fit bg-orange-500/30 hover:bg-orange-700/40 duration-300 rounded-md p-2 py-0.5 cursor-pointer border-2 ${filter === "pending" ? "border-[#FF9300] dark:border-orange-500" : "border-transparent"}`}
                   onClick={() => handleFilterChange("pending")}
                 >
                   <div className="flex space-x-2 items-center">
@@ -526,7 +526,7 @@ export default function Index() {
                       </div>
                     ) : (
                       <div className="w-full h-full flex flex-col space-y-4 justify-center items-center rounded-md border-2 border-dashed border-border">
-                        <h1 className="font-bold text-xl text-highlight">No Document Captured</h1>
+                        <h1 className="font-bold text-xl text-highlight">No Document Snapshot</h1>
                       </div>
                     )
                     }
@@ -535,7 +535,7 @@ export default function Index() {
                     {/* Notes */}
                     <div className="w-full">
                       <textarea
-                        placeholder="Notes (Optional)"
+                        placeholder="Notes"
                         className="w-full px-2 py-0.5 rounded-md border-2 border-border bg-foreground outline-none text-text font-semibold placeholder:text-highlight placeholder:font-bold"
                         style={{
                           height: "3.5rem",

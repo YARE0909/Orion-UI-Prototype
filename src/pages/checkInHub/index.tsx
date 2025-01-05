@@ -52,6 +52,7 @@ export default function Index() {
   const [, setPeerId] = useState<string>('');
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const currentUserVideoRef = useRef<HTMLVideoElement | null>(null);
+  const videoCallRef = useRef<MediaStreamTrack | null>(null);
   const peerInstance = useRef<Peer | null>(null);
   const [callList, setCallList] = useState<{
     from: string,
@@ -140,6 +141,8 @@ export default function Index() {
               currentUserVideoRef.current.play();
             }
 
+            videoCallRef.current = mediaStream.getVideoTracks()[0];
+
             call.answer(mediaStream);
             call.on('stream', (remoteStream: MediaStream) => {
               if (remoteVideoRef.current) {
@@ -163,6 +166,25 @@ export default function Index() {
       };
     }
   }, []);
+
+  const handleToggleCamera = () => {
+    // console.log(videoCallRef.current);
+    // setCameraOff(!cameraOff);
+    // videoCallRef.current!.enabled = !videoCallRef.current!.enabled;
+    console.log(mediaConnectionRef.current?.localStream.getVideoTracks());
+    const videoTracks = mediaConnectionRef.current?.localStream.getVideoTracks();
+    videoTracks![0].enabled = !videoTracks![0].enabled;
+    setCameraOff(!cameraOff);
+  };
+
+  const handleToggleMic = () => {
+    console.log(mediaConnectionRef.current?.localStream.getAudioTracks());
+    const audioTracks = mediaConnectionRef.current?.localStream.getAudioTracks();
+    audioTracks![0].enabled = !audioTracks![0].enabled;
+    setMicMuted(!micMuted);
+    // videoCallRef.current!.muted = !videoCallRef.current!.muted;
+  }
+
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -207,6 +229,8 @@ export default function Index() {
       callId: "",
       roomId: ""
     });
+    setMicMuted(false);
+    setCameraOff(false);
     endCall(inCall.roomId);
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Ended" />));
   }
@@ -221,7 +245,8 @@ export default function Index() {
       callId: "",
       roomId: ""
     });
-    holdCall(inCall.roomId);
+    setMicMuted(false);
+    setCameraOff(false); holdCall(inCall.roomId);
     return toast.custom((t: any) => (<Toast t={t} type="info" content="Call Put On Hold" />));
   }
 
@@ -535,13 +560,13 @@ export default function Index() {
                         color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
                           <MicOff className="w-6 h-6" />
-                        </Tooltip>} onClick={() => setMicMuted(!micMuted)} />
+                        </Tooltip>} onClick={handleToggleMic} />
                       <Button
                         className={cameraOff ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
                           <VideoOff className="w-6 h-6" />
-                        </Tooltip>} onClick={() => setCameraOff(!cameraOff)} />
+                        </Tooltip>} onClick={handleToggleCamera} />
                       <Button color="indigo" icon={<Tooltip tooltip="Hold Call">
                         <Pause className="w-6 h-6" />
                       </Tooltip>} onClick={handleCallHold} />

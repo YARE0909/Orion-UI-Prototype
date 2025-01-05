@@ -156,11 +156,6 @@ export default function Index() {
     }
   }, [userId, currentRoomId]);
 
-  useEffect(() => {
-    console.log("Remote video ref: ", remoteVideoRef.current);
-  }, [remoteVideoRef]);
-
-
   return (
     <div className="w-full h-screen bg-background flex flex-col text-white">
       <div className="w-full h-16 flex items-center justify-between border-b-2 border-b-border z-50 bg-background px-2 absolute top-0 left-0">

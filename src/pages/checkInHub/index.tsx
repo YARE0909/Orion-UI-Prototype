@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
-import { FilePlus2, Headset, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Trash, VideoOff } from "lucide-react";
+import { FilePlus2, Headset, Mic, MicOff, PanelRightClose, PanelRightOpen, Pause, Phone, PhoneIncoming, PhoneOff, Trash, Video, VideoOff } from "lucide-react";
 import Tooltip from "@/components/ui/ToolTip";
 import Layout from "@/components/Layout";
 import ScreenshotComponent from "@/components/ui/Screenshotcomponent";
@@ -168,9 +168,6 @@ export default function Index() {
   }, []);
 
   const handleToggleCamera = () => {
-    // console.log(videoCallRef.current);
-    // setCameraOff(!cameraOff);
-    // videoCallRef.current!.enabled = !videoCallRef.current!.enabled;
     console.log(mediaConnectionRef.current?.localStream.getVideoTracks());
     const videoTracks = mediaConnectionRef.current?.localStream.getVideoTracks();
     videoTracks![0].enabled = !videoTracks![0].enabled;
@@ -182,7 +179,6 @@ export default function Index() {
     const audioTracks = mediaConnectionRef.current?.localStream.getAudioTracks();
     audioTracks![0].enabled = !audioTracks![0].enabled;
     setMicMuted(!micMuted);
-    // videoCallRef.current!.muted = !videoCallRef.current!.muted;
   }
 
 
@@ -559,13 +555,22 @@ export default function Index() {
                         className={micMuted ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!micMuted ? "zinc" : null}
                         icon={<Tooltip tooltip={micMuted ? "Unmute Mic" : "Mute Mic"}>
-                          <MicOff className="w-6 h-6" />
+                          {
+                            !micMuted ?
+                              <Mic className="w-6 h-6" />
+                              :
+                              <MicOff className="w-6 h-6" />
+                          }
                         </Tooltip>} onClick={handleToggleMic} />
                       <Button
                         className={cameraOff ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer" : ""}
                         color={!cameraOff ? "zinc" : null}
                         icon={<Tooltip tooltip={cameraOff ? "Turn On Camera" : "Turn Off Camera"}>
-                          <VideoOff className="w-6 h-6" />
+                          {!cameraOff ?
+                            <Video className="w-6 h-6" />
+                            :
+                            <VideoOff className="w-6 h-6" />
+                          }
                         </Tooltip>} onClick={handleToggleCamera} />
                       <Button color="indigo" icon={<Tooltip tooltip="Hold Call">
                         <Pause className="w-6 h-6" />

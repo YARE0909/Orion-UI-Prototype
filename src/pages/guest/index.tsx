@@ -18,7 +18,8 @@ export default function Index() {
   const [inCall, setInCall] = useState<boolean>(false);
   const [callStatus, setCallStatus] = useState<string>('notInCall');
   const socketRef = useRef<ReturnType<typeof io> | null>(null);
-
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const uploadedChunks = useRef<string[]>([]); // Store uploaded chunk paths
 
   const router = useRouter();
 
@@ -42,11 +43,60 @@ export default function Index() {
             }
           });
         }
+
+        // Recording Start
+        const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'video/webm; codecs=vp9' });
+
+        // Create an array to hold the data chunks
+        let recordedChunks: Blob[] = [];
+
+        mediaRecorder.ondataavailable = async (event) => {
+          if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = async () => {
+          // Once the recording is stopped, create a new blob and send it
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+
+          const formData = new FormData();
+          formData.append("videoChunk", blob, "chunk.webm");
+          formData.append("sessionId", currentRoomId);
+          formData.append("user", "guest");
+
+          try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/upload-chunk`, {
+              method: "POST",
+              body: formData
+            });
+            const result = await response.json();
+            uploadedChunks.current.push(result.chunkPath); // Store uploaded chunk path
+          } catch (error) {
+            console.error("Error uploading chunk:", error);
+          } finally {
+            // Reset recorded chunks after sending
+            recordedChunks = [];
+          }
+        };
+
+        // Start recording, then stop every 2 seconds to prepare for next chunk
+        mediaRecorder.start();
+
+        setInterval(() => {
+          if (mediaRecorder.state === "recording") {
+            mediaRecorder.stop();  // Stop to trigger onstop event
+            mediaRecorder.start(); // Start again for next chunk
+          }
+        }, 2000); // Send video chunks every 2 seconds
+
+        mediaRecorderRef.current = mediaRecorder;
       })
       .catch((err) => {
         console.error("Error accessing media devices.", err);
       });
   };
+
 
   const initiateCall = () => {
     const roomId = `room-${Math.floor(Math.random() * 1000)}`;
@@ -108,7 +158,7 @@ export default function Index() {
         }
       });
 
-      socket.on("call-ended", (data) => {
+      socket.on("call-ended", async (data) => {
         if (data.roomId === currentRoomId) {
           if (mediaConnectionRef.current) {
             mediaConnectionRef.current.close();
@@ -117,8 +167,26 @@ export default function Index() {
           if (currentUserVideoRef.current) {
             currentUserVideoRef.current.srcObject = null;
           }
+          if (mediaRecorderRef.current) {
+            mediaRecorderRef.current.stop(); // Stop recording
+            mediaRecorderRef.current = null;
+          }
           setInCall(false);
           setCallStatus("notInCall");
+
+          try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/merge-chunks`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ sessionId: currentRoomId, user: "guest" }),
+            });
+            const result = await response.json();
+            console.log("Merged video path:", result.mergedVideoPath); // Handle the merged video path as needed
+          } catch (error) {
+            console.error("Error merging video:", error);
+          }
         }
       });
 

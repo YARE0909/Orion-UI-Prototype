@@ -130,67 +130,67 @@ export default function Index() {
         config: {
           iceServers: [
             {
-              urls: "relay1.expressturn.com:80",
+              urls: "turn:relay1.expressturn.com:80",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay1.expressturn.com:443",
+              urls: "turn:relay1.expressturn.com:443",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay1.expressturn.com:3478",
+              urls: "turn:relay1.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay2.expressturn.com:3478",
+              urls: "turn:relay2.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay3.expressturn.com:3478",
+              urls: "turn:relay3.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay4.expressturn.com:3478",
+              urls: "turn:relay4.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay5.expressturn.com:3478",
+              urls: "turn:relay5.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay6.expressturn.com:3478",
+              urls: "turn:relay6.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay7.expressturn.com:3478",
+              urls: "turn:relay7.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay8.expressturn.com:3478",
+              urls: "turn:relay8.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay9.expressturn.com:3478",
+              urls: "turn:relay9.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay10.expressturn.com:3478",
+              urls: "turn:relay10.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },
             {
-              urls: "relay11.expressturn.com:3478",
+              urls: "turn:relay11.expressturn.com:3478",
               username: "efE34XGFPG52SHEMJJ",
               credential: "sI43EOvU8Z3d0hFk"
             },

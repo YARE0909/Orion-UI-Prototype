@@ -92,7 +92,7 @@ export default function Index() {
             mediaRecorder.stop();  // Stop to trigger ondataavailable event
             mediaRecorder.start(); // Start again for the next chunk
           }
-        }, 10000); // Send video chunks every 2 seconds
+        }, 2000); // Send video chunks every 2 seconds
 
         mediaRecorderRef.current = mediaRecorder;
       })

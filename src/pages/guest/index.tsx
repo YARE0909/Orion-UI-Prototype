@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { toTitleCase } from "@/utils/stringFunctions";
-import { LogOut } from "lucide-react";
+import { LogOut, Mic, MicOff, Volume1, Volume2, VolumeX } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { destroyCookie, parseCookies } from "nookies";
@@ -13,6 +13,7 @@ import Toast from "@/components/ui/Toast";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import Tooltip from "@/components/ui/ToolTip";
 
 export default function Index() {
   const [userId, setUserId] = useState<string>("");
@@ -27,6 +28,8 @@ export default function Index() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const uploadedChunks = useRef<string[]>([]); // Store uploaded chunk paths
   const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [volume, setVolume] = useState<number>(1); // Volume range: 0 to 1
+  const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const [confirmLogoutModal, setConfirmLogoutModal] = useState<boolean>(false);
   const [formData, setFormData] = useState({
@@ -167,6 +170,34 @@ export default function Index() {
   const handleCloseConfirmLogoutModal = () => {
     setConfirmLogoutModal(false);
   }
+
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(event.target.value);
+    setVolume(newVolume);
+
+    if (currentUserVideoRef.current) {
+      const currentVideo = currentUserVideoRef.current;
+      currentVideo.volume = newVolume; // Set local video volume
+    }
+
+    if (remoteVideoRef.current) {
+      const remoteVideo = remoteVideoRef.current;
+      remoteVideo.volume = newVolume; // Set remote video volume
+    }
+  };
+
+  const toggleMute = () => {
+    const muteState = !isMuted;
+    setIsMuted(muteState);
+
+    if (currentUserVideoRef.current) {
+      currentUserVideoRef.current.muted = muteState;
+    }
+
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.muted = muteState;
+    }
+  };
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -415,6 +446,51 @@ export default function Index() {
           </div>
           <div>
             <video ref={remoteVideoRef} autoPlay className="w-full h-screen rounded-lg shadow-lg object-cover" />
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-foreground p-2 rounded-md">
+              {/* Volume Slider */}
+              <div className="w-44 flex items-center gap-2 border-r-2 border-r-border pr-3">
+                {
+                  volume === 0 && (
+                    <VolumeX className="w-9 h-9" />
+                  )
+                }
+                {
+                  volume > 0 && volume < 0.5 && (
+                    <Volume1 className="w-9 h-9" />
+                  )
+                }
+                {
+                  volume >= 0.5 && (
+                    <Volume2 className="w-9 h-9" />
+                  )
+                }
+                <Tooltip className="mb-2 -translate-x-28" tooltip="Volume">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="cursor-pointer appearance-none w-full h-2 bg-zinc-400 rounded-lg focus:outline-none focus:ring-offset-2 accent-indigo-600 transition-all"
+                  />
+                </Tooltip>
+              </div>
+              <div className="w-16">
+                <Button
+                  className={isMuted ? "bg-orange-500/30 border border-orange-500 hover:bg-orange-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer"
+                    : "bg-zinc-500/30 border border-zinc-500 hover:bg-zinc-500 duration-300 w-full rounded-md px-4 py-2 flex items-center justify-center space-x-1 cursor-pointer"}
+                  color={!isMuted ? "zinc" : null}
+                  icon={<Tooltip className="mb-4" tooltip={isMuted ? "Unmute Mic" : "Mute Mic"}>
+                    {
+                      !isMuted ?
+                        <Mic className="w-6 h-6" />
+                        :
+                        <MicOff className="w-6 h-6" />
+                    }
+                  </Tooltip>} onClick={toggleMute} />
+              </div>
+            </div>
           </div>
         </div>
       )}
